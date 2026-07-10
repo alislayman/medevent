@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medical Event Staffing Platform — Specification</title>
+<meta name="description" content="Product specification, technical stack, data model, flows, roadmap and pricing for a marketplace connecting medical professionals with event organisers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10303B; --body:#3A4E56; --muted:#6B7E86;
+  --primary:#0C6B74; --primary-2:#0A555C; --accent:#E4694E;
+  --paper:#F4F7F7; --surface:#FFFFFF; --line:#DCE6E7; --line-2:#C6D3D4;
+  --code:#EDF4F4;
+  --display:'Space Grotesk',sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+  --sbw:266px; --maxw:820px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--accent)}
+
+/* layout */
+.layout{display:flex;align-items:flex-start}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--ink);color:#CFE0E2;padding:26px 18px 40px}
+.brand{font-family:var(--display);font-weight:700;color:#fff;font-size:15px;letter-spacing:.2px;line-height:1.35;margin-bottom:4px}
+.brand small{display:block;font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-top:8px}
+.toc{list-style:none;margin:22px 0 0;padding:0;counter-reset:toc}
+.toc li{counter-increment:toc}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:6px 10px;border-radius:7px;color:#AFC4C7;font-size:13.5px;line-height:1.35;transition:background .15s,color .15s}
+.toc a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:10.5px;color:#5E7C80;flex:0 0 auto}
+.toc a:hover{background:#173E49;color:#fff}
+.toc a.active{background:var(--primary);color:#fff}
+.toc a.active::before{color:#Bfeaea}
+
+.content{flex:1 1 auto;min-width:0;padding:0 clamp(20px,5vw,64px) 90px}
+.wrap{max-width:var(--maxw);margin:0 auto}
+
+/* hero */
+.hero{position:relative;margin:0 calc(-1*clamp(20px,5vw,64px)) 46px;background:var(--ink);color:#EAF3F3;overflow:hidden}
+.hero-inner{max-width:var(--maxw);margin:0 auto;padding:64px clamp(20px,5vw,64px) 74px}
+.hero-eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:3px;font-size:11px;color:var(--accent);margin:0 0 18px}
+.hero-title{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.5px;color:#fff;margin:0 0 16px}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:#B9D0D2;max-width:60ch;margin:0 0 26px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta span{font-family:var(--mono);font-size:11px;letter-spacing:.4px;color:#9DBABD;border:1px solid #274b55;border-radius:999px;padding:5px 12px}
+.ecg{position:absolute;left:0;bottom:0;width:100%;height:70px;display:block}
+.ecg polyline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;
+  stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 2.4s ease forwards .2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* sections */
+section{padding:30px 0 8px;scroll-margin-top:20px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:2.5px;font-size:11px;color:var(--primary);margin:0 0 6px}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(23px,3vw,30px);line-height:1.15;letter-spacing:-.4px;color:var(--ink);margin:0 0 18px}
+h3{font-family:var(--display);font-weight:600;font-size:16.5px;color:var(--ink);margin:26px 0 8px}
+p{margin:0 0 14px;max-width:72ch}
+ul{margin:0 0 16px;padding:0;list-style:none;max-width:72ch}
+li{position:relative;padding-left:20px;margin:0 0 7px}
+li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;background:var(--primary);border-radius:1px}
+li ul{margin:8px 0 4px}
+li ul li::before{background:var(--accent);border-radius:50%;width:5px;height:5px}
+strong{color:var(--ink);font-weight:600}
+.lead{font-size:17px;color:var(--body)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 6px;border-radius:5px;color:var(--primary-2)}
+
+/* callout */
+.note{border-left:3px solid var(--accent);background:#FCF1ED;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:14.5px;color:#7a4436;max-width:72ch}
+.note strong{color:#7a4436}
+
+/* diagram card */
+.figure{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:18px 0 8px;overflow:hidden;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.figure-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line);background:#F7Fafa}
+.figure-h .t{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary)}
+.figure-h .k{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.figure-b{padding:16px;overflow-x:auto}
+.mermaid{display:flex;justify-content:center;min-width:0}
+.cap{font-size:13px;color:var(--muted);margin:4px 2px 22px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:8px 0 6px;font-size:14.5px;overflow:hidden;border:1px solid var(--line);border-radius:10px}
+.tbl thead th{background:var(--ink);color:#fff;font-family:var(--display);font-weight:600;text-align:left;padding:10px 14px;font-size:13px}
+.tbl thead th.r{text-align:right}
+.tbl td{padding:9px 14px;border-top:1px solid var(--line)}
+.tbl td.r{text-align:right;font-family:var(--mono);font-size:13px;white-space:nowrap}
+.tbl tr.band td{background:#E9F1F1;font-weight:600;color:var(--ink);font-family:var(--display);font-size:12.5px;letter-spacing:.3px}
+.tbl tr.sub td{background:#F3F7F7;font-weight:600;color:var(--ink)}
+.tbl tr.total td{background:#DEEFEF;font-weight:700;color:var(--ink)}
+.tbl-scroll{overflow-x:auto}
+
+/* pills */
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--primary-2);background:#EEF5F5;margin-right:6px}
+
+/* stack grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none;max-width:none}
+.grid li{margin:0;padding:0}
+.grid li::before{display:none}
+.card{height:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 17px;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.card .k{font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.card h4{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink);margin:0 0 6px}
+.card p{font-size:13.5px;line-height:1.55;color:var(--body);margin:0;max-width:none}
+
+/* roadmap phases */
+.phase{border:1px solid var(--line);border-radius:14px;padding:0;margin:16px 0;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.phase-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);background:#F7Fafa}
+.phase-top .num{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink)}
+.phase-top .num span{color:var(--primary)}
+.phase-top .sum{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--ink);background:#DEEFEF;border:1px solid var(--line-2);border-radius:999px;padding:3px 12px;white-space:nowrap}
+.prio{font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid transparent}
+.prio-1{background:#0C6B74;color:#fff}
+.prio-2{background:#EEF5F5;color:var(--primary-2);border-color:var(--line-2)}
+.prio-3{background:#FDEEE9;color:#a24b34;border-color:#f0c3b6}
+.phase-b{padding:6px 18px 10px}
+.feat{width:100%;border-collapse:collapse;font-size:14px}
+.feat td{padding:9px 2px;border-top:1px solid var(--line);vertical-align:top}
+.feat tr:first-child td{border-top:0}
+.feat td.r{text-align:right;font-family:var(--mono);font-size:12.5px;color:var(--primary-2);white-space:nowrap;padding-left:14px}
+.feat td .d{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.totline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--ink);color:#EAF3F3;border-radius:12px;padding:14px 18px;margin:18px 0 6px}
+.totline .lab{font-family:var(--display);font-weight:600;font-size:14.5px;color:#fff}
+.totline .val{margin-left:auto;font-family:var(--mono);font-size:16px;color:#fff}
+.totline .sub{font-family:var(--mono);font-size:11.5px;color:#9DBABD}
+
+/* nav toggle (mobile) */
+.nav-toggle{display:none;position:fixed;z-index:40;top:14px;left:14px;background:var(--ink);color:#fff;border:0;border-radius:9px;width:44px;height:44px;font-size:20px;cursor:pointer;align-items:center;justify-content:center}
+
+footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+
+@media (max-width:900px){
+  .nav-toggle{display:flex}
+  .sidebar{position:fixed;z-index:39;left:0;top:0;transform:translateX(-100%);transition:transform .22s ease;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .sidebar.open{transform:none}
+  .content{padding-top:64px}
+  .hero{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ecg polyline{animation:none;stroke-dashoffset:0}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+</style>
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle contents">☰</button>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">Medical Event Staffing Platform<small>Specification</small></div>
+  <nav>
+  <ul class="toc">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#roles">Roles &amp; use cases</a></li>
+    <li><a href="#stack">Technical stack</a></li>
+    <li><a href="#data">Data model</a></li>
+    <li><a href="#flows">Key flows</a></li>
+    <li><a href="#pages">Public pages</a></li>
+    <li><a href="#pro-profile">Professional profile</a></li>
+    <li><a href="#org-profile">Organisation profile</a></li>
+    <li><a href="#events">Events &amp; contracts</a></li>
+    <li><a href="#teams">Teams</a></li>
+    <li><a href="#search">Search &amp; matching</a></li>
+    <li><a href="#subs">Subscriptions &amp; payments</a></li>
+    <li><a href="#payable">Payable services</a></li>
+    <li><a href="#comms">Communication</a></li>
+    <li><a href="#verify">Account verification</a></li>
+    <li><a href="#i18n">Internationalization</a></li>
+    <li><a href="#mobile">Mobile strategy</a></li>
+    <li><a href="#admin">Admin panel</a></li>
+    <li><a href="#roadmap">Roadmap &amp; pricing</a></li>
+    <li><a href="#hosting">Hosting &amp; running costs</a></li>
+    <li><a href="#assumptions">Assumptions &amp; questions</a></li>
+  </ul>
+  </nav>
+</aside>
+
+<main class="content">
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Product specification</p>
+    <h1 class="hero-title">Medical Event Staffing Platform</h1>
+    <p class="hero-sub">A two-sided marketplace connecting medical professionals — doctors, nurses, officials, cutmen, ambulance staff — with event organisers who need qualified on-site medical coverage.</p>
+    <div class="hero-meta"><span>Working title</span><span>Draft · 11 Jul 2026</span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
+  </div>
+  <svg class="ecg" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,40 250,40 292,40 306,15 320,66 334,28 348,40 610,40 700,40 714,10 728,70 742,40 902,40 946,40 960,20 974,60 988,40 1200,40"/></svg>
+</header>
+
+<div class="wrap">
+
+<section id="overview">
+  <p class="eyebrow">01 — Overview</p>
+  <h2>Overview</h2>
+  <p class="lead">The platform connects medical professionals with event organisers who need medical staff on site — sports competitions, combat-sports events and public gatherings.</p>
+  <h3>Two user types</h3>
+  <ul>
+    <li><strong>Professionals</strong> — build a verified profile, set specialties, trainings, availability and experience, then search and apply for events. They can also form teams with their peers and apply together.</li>
+    <li><strong>Organisations</strong> — post events with requirements, attach a contract, and search and invite professionals. They can see which team a professional belongs to and its members.</li>
+  </ul>
+  <h3>Core loop</h3>
+  <ul>
+    <li>An organiser creates an event with requirements; the event is either public or sent privately to support.</li>
+    <li>Professionals discover events and apply; organisers discover professionals and invite them.</li>
+    <li>Professionals can form teams, invite peers and apply together as a team; organisers can view a professional's team and its members.</li>
+    <li>The two parties communicate, agree on a contract, and the engagement proceeds.</li>
+  </ul>
+  <h3>How it makes money</h3>
+  <ul>
+    <li>Monthly subscription tiers for professionals — Basic, Bronze, Silver, Gold.</li>
+    <li>Free signup for organisations, with payable premium services.</li>
+    <li>A paid verification badge for professionals.</li>
+  </ul>
+</section>
+
+<section id="roles">
+  <p class="eyebrow">02 — Roles &amp; use cases</p>
+  <h2>Roles &amp; use cases</h2>
+  <h3>Professional types</h3>
+  <ul>
+    <li>Médecin (doctor)</li><li>Infirmier (nurse)</li><li>Officiel (official)</li>
+    <li>Cutman (combat-sports corner medic)</li><li>Ambulancier (ambulance staff)</li>
+  </ul>
+  <h3>Organisation</h3>
+  <ul><li>Event organisers — sports events, competitions and public events.</li></ul>
+  <h3>Admin / Support (internal)</h3>
+  <ul><li>Verifies credentials, manages badges, handles service requests and quotations, moderates content and resolves disputes. Detailed in <a href="#admin">§18</a>.</li></ul>
+  <div class="figure">
+    <div class="figure-h"><span class="t">Use-case diagram</span><span class="k">actors → capabilities · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+flowchart LR
+  prof([Professional]):::actor
+  org([Organiser]):::actor
+  adm([Admin / Support]):::actor
+  subgraph platform [Platform · all phases]
+    u1["Manage profile &amp; availability"]
+    u2["Search &amp; apply to events"]
+    u3["Create teams &amp; invite peers"]
+    u4["Apply as a team"]
+    u5["Get verified (paid badge)"]
+    u6["Subscribe to a plan"]
+    u7["Message users &amp; support"]
+    u8["AI-assisted search &amp; matching"]
+    u9["Reviews &amp; ratings"]
+    u10["Post events &amp; contracts"]
+    u11["Search &amp; invite professionals"]
+    u12["View a pro's team &amp; members"]
+    u13["Request private search"]
+    u14["Request &amp; accept quotations"]
+    u15["Verify credentials"]
+    u16["Build &amp; send quotations"]
+    u17["Manage reviews &amp; moderation"]
+    u18["Run back-office &amp; analytics"]
+    bot(["Support chatbot"])
+  end
+  prof --- u1
+  prof --- u2
+  prof --- u3
+  prof --- u4
+  prof --- u5
+  prof --- u6
+  prof --- u7
+  prof --- u8
+  prof --- u9
+  org --- u10
+  org --- u11
+  org --- u12
+  org --- u13
+  org --- u14
+  org --- u7
+  org --- u8
+  org --- u9
+  adm --- u15
+  adm --- u16
+  adm --- u17
+  adm --- u18
+  prof -.-> bot
+  org -.-> bot
+  classDef actor fill:#FDEEE9,stroke:#E4694E,stroke-width:1.2px,color:#10303B;
+</pre></div>
+  </div>
+  <p class="cap">Who can do what across the platform, covering every phase. Subscriptions apply to professionals; messaging, AI-assisted search and the support chatbot are shared by professionals and organisers.</p>
+</section>
+
+<section id="stack">
+  <p class="eyebrow">03 — Technical stack</p>
+  <h2>Technical stack</h2>
+  <p>The backend language is fixed (Python). The rest is chosen for a robust, GDPR-appropriate build that also serves a future mobile app from one codebase.</p>
+  <ul class="grid">
+    <li><div class="card"><p class="k">Backend</p><h4>Django + Django REST Framework</h4><p>One clean, versioned API serving both the web app and the future mobile app, with a dedicated back-office for verification, support and quotations.</p></div></li>
+    <li><div class="card"><p class="k">Frontend · web</p><h4>Next.js (React) + TypeScript</h4><p>Tailwind CSS and shadcn/ui for a responsive, accessible interface; server-side rendering for fast, SEO-friendly public pages.</p></div></li>
+    <li><div class="card"><p class="k">Mobile</p><h4>Responsive → PWA → native</h4><p>Responsive web first, then an installable PWA with push, then a native iOS + Android app via React Native / Expo.</p></div></li>
+    <li><div class="card"><p class="k">Database</p><h4>PostgreSQL</h4><p>Relational core with JSONB for flexible fields and full-text search to power matching and filtering.</p></div></li>
+    <li><div class="card"><p class="k">Auth &amp; payments</p><h4>JWT · Stripe · PayPal</h4><p>Django auth with JWT for the API; Stripe (cards + tiers) and PayPal, with webhooks keeping subscription state in sync.</p></div></li>
+    <li><div class="card"><p class="k">File storage</p><h4>EU S3-compatible storage</h4><p>Encrypted object storage in the EU for avatars and sensitive credential documents.</p></div></li>
+    <li><div class="card"><p class="k">AI</p><h4>AI search &amp; support chatbot</h4><p>AI-assisted matching and ranking in search, plus a support chatbot layered on the same API in a later phase.</p></div></li>
+    <li><div class="card"><p class="k">Hosting</p><h4>EU / France · GDPR</h4><p>EU data residency (Scaleway, OVHcloud or Hetzner) for medical and credential data.</p></div></li>
+    <li><div class="card"><p class="k">Source &amp; CI/CD</p><h4>GitHub + GitHub Actions</h4><p>Automated lint → test → build → deploy; mobile builds via Expo EAS.</p></div></li>
+  </ul>
+  <div class="figure">
+    <div class="figure-h"><span class="t">System architecture</span><span class="k">clients → API → services · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+flowchart TB
+  subgraph client [Clients]
+    web[Next.js Web App]
+    pwa[PWA · installable]
+    mob[React Native App]
+  end
+  subgraph infra [EU Hosting · GDPR]
+    api[Django + DRF API]
+    db[(PostgreSQL)]
+    obj[(Object Storage)]
+    ai[AI search &amp; chatbot service]
+  end
+  stripe[Stripe]
+  paypal[PayPal]
+  comms[Email / SMS]
+  web --> api
+  pwa --> api
+  mob --> api
+  api --> db
+  api --> obj
+  api --> ai
+  api --> stripe
+  api --> paypal
+  api --> comms
+</pre></div>
+  </div>
+</section>
+
+<section id="data">
+  <p class="eyebrow">04 — Data model</p>
+  <h2>Data model</h2>
+  <p>A simplified class diagram of the core entities and their relationships. Teams belong to professionals: a professional creates a team, peers join via the <code>TeamMembership</code> join, and a team can submit an application of its own. Organisations are not owners of teams — they can only view them.</p>
+  <div class="figure">
+    <div class="figure-h"><span class="t">Class diagram</span><span class="k">core entities · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+classDiagram
+  class User {
+    +int id
+    +string email
+    +string role
+    +bool emailVerified
+    +bool phoneVerified
+    +string locale
+  }
+  class ProfessionalProfile {
+    +string type
+    +string[] specialties
+    +int diplomaYear
+    +string university
+    +string country
+    +string eventVolumeRange
+    +json availability
+    +bool verified
+  }
+  class OrganisationProfile {
+    +string name
+    +string type
+    +string country
+    +string requirements
+  }
+  class Document {
+    +string type
+    +string fileUrl
+    +string status
+  }
+  class Training {
+    +string kind
+    +string name
+  }
+  class BoardRegistration {
+    +string departement
+    +date date
+    +string[] validCountries
+  }
+  class Certificate {
+    +string name
+    +date expiryDate
+  }
+  class Plan {
+    +string name
+    +decimal price
+    +string interval
+  }
+  class Subscription {
+    +string status
+    +string provider
+    +date periodEnd
+  }
+  class VerificationBadge {
+    +string status
+    +date grantedAt
+  }
+  class Event {
+    +string title
+    +date[] dates
+    +string location
+    +string[] requiredRoles
+    +int headcount
+    +string visibility
+    +string status
+  }
+  class Contract {
+    +string type
+    +string content
+  }
+  class Application {
+    +string status
+    +bool asTeam
+  }
+  class Invitation {
+    +string status
+  }
+  class Team {
+    +string name
+  }
+  class TeamMembership {
+    +string role
+  }
+  class Conversation {
+    +int id
+    +string kind
+  }
+  class Message {
+    +string body
+    +datetime sentAt
+  }
+  class Review {
+    +int rating
+    +string comment
+    +bool isPrivate
+  }
+  class Quotation {
+    +decimal amount
+    +string status
+  }
+  User "1" --> "0..1" ProfessionalProfile : has
+  User "1" --> "0..1" OrganisationProfile : has
+  ProfessionalProfile "1" --> "0..*" Training : lists
+  ProfessionalProfile "1" --> "0..*" Certificate : holds
+  ProfessionalProfile "1" --> "0..*" BoardRegistration : registers
+  ProfessionalProfile "1" --> "0..*" Document : uploads
+  ProfessionalProfile "1" --> "0..1" VerificationBadge : may hold
+  User "1" --> "0..*" Subscription : subscribes
+  Subscription "*" --> "1" Plan : on
+  OrganisationProfile "1" --> "0..*" Event : posts
+  Event "1" --> "1" Contract : has
+  Event "1" --> "0..*" Application : receives
+  ProfessionalProfile "1" --> "0..*" Application : submits
+  Event "1" --> "0..*" Invitation : sends
+  ProfessionalProfile "1" --> "0..*" Team : creates
+  Team "1" --> "0..*" TeamMembership : includes
+  ProfessionalProfile "1" --> "0..*" TeamMembership : joins
+  Team "1" --> "0..*" Application : applies as
+  Conversation "1" --> "0..*" Message : contains
+  User "1" --> "0..*" Message : sends
+  Event "1" --> "0..*" Review : yields
+  OrganisationProfile "1" --> "0..*" Quotation : requests
+</pre></div>
+  </div>
+</section>
+
+<section id="flows">
+  <p class="eyebrow">05 — Key flows</p>
+  <h2>Key flows</h2>
+  <p>The main sequences the system has to support, plus the lifecycle of an application.</p>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · onboarding + subscription</span><span class="k">professional</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P as Professional
+  participant FE as Web App
+  participant API as Django API
+  participant DB as PostgreSQL
+  participant N as Email / SMS
+  participant S as Stripe
+  P->>FE: Sign up (email, password)
+  FE->>API: POST /register
+  API->>DB: Create user
+  API->>N: Send email + SMS codes
+  N-->>P: Verification codes
+  P->>FE: Confirm email &amp; mobile
+  FE->>API: Verify codes
+  API->>DB: Mark verified
+  P->>FE: Complete profile, pick plan
+  FE->>API: Create subscription
+  API->>S: Open checkout
+  S-->>P: Payment page
+  P->>S: Pay
+  S-->>API: Webhook: paid
+  API->>DB: Activate subscription
+  API-->>P: Access granted
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · event, invite &amp; contract</span><span class="k">organiser ↔ professional</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor O as Organiser
+  participant API as Django API
+  participant DB as PostgreSQL
+  actor P as Professional
+  O->>API: Create event + auto contract
+  API->>DB: Save event (public or to support)
+  P->>API: Search events, apply
+  API->>DB: Create application (pending)
+  API-->>O: Notify: new application
+  O->>API: Accept / invite professional
+  API->>DB: Update status: accepted
+  API-->>P: Notify: accepted
+  O->>API: Edit or replace contract lines
+  API->>DB: Save final contract
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · form a team &amp; apply together</span><span class="k">professionals ↔ organiser</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P1 as Professional (lead)
+  participant API as Django API
+  participant DB as PostgreSQL
+  actor P2 as Professional (peer)
+  actor O as Organiser
+  P1->>API: Create team
+  API->>DB: Save team (owner = P1)
+  P1->>API: Invite peer
+  API-->>P2: Team invitation
+  P2->>API: Accept invitation
+  API->>DB: Add membership
+  P1->>API: Apply to event as a team
+  API->>DB: Create team application
+  API-->>O: Notify: team application
+  O->>API: View team &amp; members
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · credential verification</span><span class="k">professional + admin</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P as Professional
+  participant API as Django API
+  participant DB as PostgreSQL
+  participant S as Stripe
+  actor A as Admin / Support
+  P->>API: Upload documents
+  API->>DB: Store documents (pending)
+  P->>API: Pay for verification badge
+  API->>S: One-time payment
+  S-->>API: Webhook: paid
+  A->>API: Review documents
+  A->>API: Approve or reject
+  API->>DB: Grant verification badge
+  API-->>P: Notify: verified
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · payable service &amp; quotation (devis)</span><span class="k">organiser + admin</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor O as Organiser
+  participant API as Django API
+  actor A as Admin / Support
+  O->>API: Request private search
+  API-->>A: New service request
+  A->>API: Prepare quotation (devis)
+  API-->>O: Send quotation
+  O->>API: Accept quotation
+  A->>API: Deliver shortlist, invoice
+  O->>API: Pay
+  API-->>O: Service delivered
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">State · application lifecycle</span><span class="k">status transitions</span></div>
+    <div class="figure-b"><pre class="mermaid">
+stateDiagram-v2
+  [*] --> Pending
+  Pending --> Accepted : organiser accepts
+  Pending --> Declined : organiser declines
+  Accepted --> Confirmed : contract signed
+  Confirmed --> Completed : event done
+  Accepted --> Cancelled : either party cancels
+  Completed --> [*]
+  Declined --> [*]
+  Cancelled --> [*]
+</pre></div>
+  </div>
+</section>
+
+<section id="pages">
+  <p class="eyebrow">06 — Public pages</p>
+  <h2>Public pages (no sign-in)</h2>
+  <h3>Home page</h3>
+  <ul>
+    <li>Intro video, logo, clean and minimal interface, value proposition.</li>
+    <li>Clear calls to action: sign up as a Professional or as an Organisation.</li>
+  </ul>
+  <h3>Other public pages</h3>
+  <ul>
+    <li>Licensing page.</li>
+    <li>About Us page.</li>
+    <li>Recommended additions: Pricing / Plans, Contact, and legal pages (GDPR privacy policy, terms of service).</li>
+  </ul>
+</section>
+
+<section id="pro-profile">
+  <p class="eyebrow">07 — Professional profile</p>
+  <h2>Professional profile</h2>
+  <ul>
+    <li><strong>Professional type:</strong> Médecin, Infirmier, Officiel, Cutman, Ambulancier.</li>
+    <li><strong>Medical specialty:</strong> one or several.</li>
+    <li><strong>Diploma:</strong> year, place, university, country.</li>
+  </ul>
+  <h3>Complementary trainings (treated like diplomas)</h3>
+  <ul>
+    <li>Systematic (predefined) options:
+      <ul><li>Traumatologie du sport</li><li>Gestion d’urgence terrain</li><li>ATLS</li><li>PHTLS</li></ul>
+    </li>
+    <li>Free-text field for other trainings.</li>
+    <li>Document upload (included in the verification).</li>
+  </ul>
+  <h3>Registration with the medical board (tableau de l’ordre)</h3>
+  <ul><li>Département / region</li><li>Date</li><li>Document</li><li>Country(ies) where the license is valid</li></ul>
+  <h3>Experience &amp; other fields</h3>
+  <ul>
+    <li>Event volume / experience captured as ranges (0–5, 5–10, …).</li>
+    <li>Languages.</li>
+    <li>Certificates → document uploads.</li>
+    <li>Availability (recommended): calendar or date ranges so organisers can filter by who is free.</li>
+  </ul>
+</section>
+
+<section id="org-profile">
+  <p class="eyebrow">08 — Organisation profile</p>
+  <h2>Organisation profile</h2>
+  <ul>
+    <li>Organisation details: name, type, country, logo.</li>
+    <li>Requirements: specialties / roles typically needed, event types, typical locations.</li>
+    <li>Contact and billing information.</li>
+  </ul>
+  <div class="note">These fields are indicative and should be expanded and explained in more detail — the full field list, formats and which are mandatory need to be defined.</div>
+</section>
+
+<section id="events">
+  <p class="eyebrow">09 — Events &amp; contracts</p>
+  <h2>Events &amp; contracts</h2>
+  <h3>Event creation (by organiser)</h3>
+  <ul><li>Details: title, date(s), location, roles / specialties required, number of professionals, budget or range.</li></ul>
+  <h3>Contract</h3>
+  <ul>
+    <li>A contract is auto-generated by the system and attached to the event.</li>
+    <li>The organiser can edit or replace specific lines, or attach their own contract instead.</li>
+  </ul>
+  <h3>Visibility</h3>
+  <ul><li>Public — listed and searchable by professionals.</li><li>Direct to support — sent privately to support for handling.</li></ul>
+  <h3>Application / invitation</h3>
+  <ul>
+    <li>Professionals apply to public events individually or as a team.</li>
+    <li>Organisers invite professionals and can see which team a professional belongs to and its members (<a href="#teams">§10</a>).</li>
+  </ul>
+</section>
+
+<section id="teams">
+  <p class="eyebrow">10 — Teams</p>
+  <h2>Teams</h2>
+  <p>Teams are a professional feature — they are not owned by organisations. Professionals group together, invite each other and can apply to events as a single team.</p>
+  <h3>Professionals</h3>
+  <ul>
+    <li>Create a team and become its owner; invite peers to join.</li>
+    <li>A professional can belong to several teams at once (multi-team membership).</li>
+    <li>Apply to public events as a team, in addition to applying individually.</li>
+  </ul>
+  <h3>Organisations</h3>
+  <ul>
+    <li>Can see which team a professional belongs to and view the team's members.</li>
+    <li>Can invite a professional and, through them, reach the team — but do not create or manage teams.</li>
+  </ul>
+</section>
+
+<section id="search">
+  <p class="eyebrow">11 — Search &amp; matching</p>
+  <h2>Search &amp; matching</h2>
+  <ul>
+    <li>Professional searches for events (filters: role, specialty, location, date, …).</li>
+    <li>Organiser searches for professionals (filters: type, specialty, certifications, languages, availability, verification status, location) and can see each professional's team.</li>
+    <li>Matching / recommendations: filter-based to start; AI-assisted matching, ranking and recommendations in a later phase, alongside saved searches and alerts.</li>
+  </ul>
+</section>
+
+<section id="subs">
+  <p class="eyebrow">12 — Subscriptions &amp; payments</p>
+  <h2>Subscriptions, payments &amp; verification badge</h2>
+  <h3>Professional tiers (monthly)</h3>
+  <ul><li>Basic (free) + Bronze + Silver + Gold. What each tier unlocks is defined during Phase 1.</li></ul>
+  <h3>Organisation</h3>
+  <ul><li>Free signup; organisations pay for premium services (<a href="#payable">§13</a>) rather than a subscription.</li></ul>
+  <h3>Payment methods</h3>
+  <ul><li>Stripe (cards) first; PayPal added in a later phase.</li></ul>
+  <h3>Verification badge</h3>
+  <ul><li>Separate payment; unlocks the verified badge after document review by support.</li></ul>
+</section>
+
+<section id="payable">
+  <p class="eyebrow">13 — Payable services</p>
+  <h2>Payable services (private search)</h2>
+  <ul>
+    <li>The organiser can request a private search — a bespoke shortlist of professionals prepared by the support team.</li>
+    <li>The support team reviews the request and sends a quotation (<em>devis</em> — a price quote).</li>
+    <li>Billed as a one-off service, not a subscription.</li>
+  </ul>
+</section>
+
+<section id="comms">
+  <p class="eyebrow">14 — Communication</p>
+  <h2>Communication</h2>
+  <h3>Messaging</h3>
+  <ul>
+    <li>In-app messaging between all users: professional ↔ organiser, professional ↔ professional, and with the support team.</li>
+    <li>Direct messaging first; a support chatbot is added in a later phase to handle common questions and triage before a human steps in.</li>
+  </ul>
+  <h3>AI features</h3>
+  <ul><li>AI is applied especially in search — assisting matching, ranking and recommendations — and powers the later support chatbot.</li></ul>
+  <h3>Notifications</h3>
+  <ul><li>In-app + email notifications for applications, invitations, messages, contract / event updates and verification status.</li></ul>
+</section>
+
+<section id="verify">
+  <p class="eyebrow">15 — Account verification</p>
+  <h2>Account verification (email &amp; mobile)</h2>
+  <ul>
+    <li>Email verification at signup.</li>
+    <li>Mobile (SMS) verification.</li>
+    <li>Credential verification is handled separately via document review (<a href="#pro-profile">§7</a>, <a href="#subs">§12</a>).</li>
+  </ul>
+</section>
+
+<section id="i18n">
+  <p class="eyebrow">16 — Internationalization</p>
+  <h2>Internationalization (FR / EN)</h2>
+  <ul>
+    <li>Full user-interface translation in French and English.</li>
+    <li>Bilingual content / data fields where relevant.</li>
+  </ul>
+</section>
+
+<section id="mobile">
+  <p class="eyebrow">17 — Mobile strategy</p>
+  <h2>Mobile strategy</h2>
+  <ul>
+    <li>Phase 1: mobile-responsive web.</li>
+    <li>Phase 2: optional PWA (installable + push) — an app-like experience.</li>
+    <li>Phase 3: native iOS + Android app via React Native / Expo.</li>
+  </ul>
+</section>
+
+<section id="admin">
+  <p class="eyebrow">18 — Admin panel</p>
+  <h2>Admin / back-office panel</h2>
+  <p>A private back-office for the internal admin / support team. The early phases ship the essentials needed to run the marketplace; more advanced tooling is added in later phases as paid add-ons.</p>
+  <h3>Included — early phases</h3>
+  <ul>
+    <li><strong>User &amp; profile management:</strong> view and search all professionals and organisations; approve, suspend or ban accounts; edit or correct profile data.</li>
+    <li><strong>Credential verification:</strong> review uploaded documents (diplomas, certificates, ordre registration, insurance) and approve or reject them; grant or revoke the verification badge.</li>
+    <li><strong>Subscriptions &amp; payments:</strong> see who is on which tier and their payment status; handle verification-badge payments and basic refunds.</li>
+    <li><strong>Payable services &amp; quotations (devis):</strong> receive private-search requests; build, send and track quotations (sent, accepted, invoiced, paid).</li>
+    <li><strong>Events, contracts &amp; moderation:</strong> view all events (public and sent-to-support); handle direct-to-support events; access contracts; basic moderation of profiles, events and messages.</li>
+    <li><strong>Content &amp; translations:</strong> manage static pages (Home, About, Licensing) and FR / EN translations.</li>
+  </ul>
+  <h3>Advanced — later phases <span class="pill">extra</span></h3>
+  <ul>
+    <li><strong>Review &amp; evaluation management:</strong> enable or disable evaluations globally or per user; keep reviews private; send private feedback to help a party improve.</li>
+    <li><strong>Analytics dashboards:</strong> signups, active users per role, subscription revenue, verification throughput, events posted, application / match rates.</li>
+    <li><strong>Certificate-expiry tracking:</strong> automatic flags when a credential lapses.</li>
+    <li><strong>Chatbot &amp; AI management:</strong> configure the support chatbot and tune AI-assisted search.</li>
+    <li><strong>Roles, permissions &amp; audit:</strong> scoped admin / support sub-roles and a full audit log of admin actions (also useful for GDPR).</li>
+    <li><strong>Advanced moderation &amp; troubleshooting:</strong> reports/flags queue, broadcast announcements, and viewing an account “as the user”.</li>
+  </ul>
+</section>
+
+<section id="roadmap">
+  <p class="eyebrow">19 — Roadmap &amp; pricing</p>
+  <h2>Phasing, priorities &amp; pricing</h2>
+  <p>Features are prioritised by phase: Phase 1 is the must-have MVP, Phase 2 adds trust and collaboration, and Phase 3 covers mobile, AI and growth. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§20</a>).</p>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>1</span></span>
+      <span class="prio prio-1">Priority · Must-have (MVP)</span>
+      <span class="sum">Subtotal €1,520</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Foundation &amp; core marketplace</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Public Home page <span class="d">Intro video, logo, clean minimal UI, calls to action</span></td><td class="r">€100</td></tr>
+        <tr><td>About Us + Licensing static pages</td><td class="r">€70</td></tr>
+        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation</span></td><td class="r">€120</td></tr>
+        <tr><td>Email verification</td><td class="r">€50</td></tr>
+        <tr><td>Professional profile <span class="d">All fields + document uploads</span></td><td class="r">€220</td></tr>
+        <tr><td>Organisation profile</td><td class="r">€100</td></tr>
+        <tr><td>Event creation + auto-generated contract (base)</td><td class="r">€130</td></tr>
+        <tr><td>Search — Organiser → Professionals <span class="d">Filters</span></td><td class="r">€110</td></tr>
+        <tr><td>Search — Professional → Events <span class="d">Filters</span></td><td class="r">€90</td></tr>
+        <tr><td>Subscription tiers (Basic / Bronze / Silver / Gold) + Stripe</td><td class="r">€190</td></tr>
+        <tr><td>Internationalization (FR / EN) foundation</td><td class="r">€90</td></tr>
+        <tr><td>Responsive mobile web layout</td><td class="r">€250</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>2</span></span>
+      <span class="prio prio-2">Priority · Important (trust &amp; teams)</span>
+      <span class="sum">Subtotal €1,110</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Trust, teams, payable services &amp; back-office</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Verification badge workflow + one-time payment</td><td class="r">€170</td></tr>
+        <tr><td>Mobile (SMS) verification</td><td class="r">€80</td></tr>
+        <tr><td>Contract editing / replacement + public vs. direct-to-support</td><td class="r">€100</td></tr>
+        <tr><td>Payable services (private search) + quotation (devis)</td><td class="r">€100</td></tr>
+        <tr><td>Notifications <span class="d">In-app + email</span></td><td class="r">€150</td></tr>
+        <tr><td>Direct messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support</span></td><td class="r">€160</td></tr>
+        <tr><td>Teams <span class="d">Create / join, invite peers, apply as a team, multi-team membership</span></td><td class="r">€200</td></tr>
+        <tr><td>Admin / back-office panel <span class="d">Basics: verification, support, quotations, user management</span></td><td class="r">€150</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>3</span></span>
+      <span class="prio prio-3">Priority · Future (mobile, AI &amp; growth)</span>
+      <span class="sum">Subtotal €3,170</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Mobile app, AI &amp; growth</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Native mobile app <span class="d">iOS + Android, React Native / Expo</span></td><td class="r">€1,500</td></tr>
+        <tr><td>Reviews &amp; ratings + admin controls <span class="d">Enable/disable, keep private, private feedback</span></td><td class="r">€300</td></tr>
+        <tr><td>Participation history</td><td class="r">€150</td></tr>
+        <tr><td>Advanced matching / saved searches / alerts</td><td class="r">€250</td></tr>
+        <tr><td>AI features <span class="d">AI-assisted search, ranking &amp; recommendations</span></td><td class="r">€300</td></tr>
+        <tr><td>Support chatbot</td><td class="r">€250</td></tr>
+        <tr><td>Advanced admin features <span class="d">Analytics, roles/permissions &amp; audit, chatbot/AI management</span></td><td class="r">€200</td></tr>
+        <tr><td>Push notifications</td><td class="r">€120</td></tr>
+        <tr><td>PayPal integration <span class="d">In addition to Stripe</span></td><td class="r">€100</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="totline">
+    <span class="lab">Core build · Phase 1 + Phase 2</span>
+    <span class="val">€2,630</span>
+  </div>
+  <div class="totline">
+    <span class="lab">Full scope · all phases <span class="sub">Phase 3 indicative</span></span>
+    <span class="val">€5,800</span>
+  </div>
+</section>
+
+<section id="hosting">
+  <p class="eyebrow">20 — Hosting &amp; running costs</p>
+  <h2>Estimated hosting &amp; running costs</h2>
+  <p>Ongoing costs to run the platform, <strong>separate from the development quote above</strong>. Estimates only, based on EU providers (chosen for GDPR); they scale with the number of users and message / SMS volume.</p>
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>Item</th><th class="r">Estimated cost</th></tr></thead>
+    <tbody>
+      <tr class="band"><td colspan="2">Monthly / recurring — scales with usage</td></tr>
+      <tr><td>Domain name (.com)</td><td class="r">≈ €1/mo (€10–15/yr)</td></tr>
+      <tr><td>App server / cloud hosting (Hetzner, Scaleway, OVH — EU)</td><td class="r">€5–40/mo</td></tr>
+      <tr><td>Managed PostgreSQL (or on the same server)</td><td class="r">€0–25/mo</td></tr>
+      <tr><td>Object storage — documents &amp; avatars (EU)</td><td class="r">€1–10/mo</td></tr>
+      <tr><td>Frontend hosting (Vercel / Cloudflare Pages)</td><td class="r">€0–20/mo</td></tr>
+      <tr><td>Transactional email (Brevo / Postmark)</td><td class="r">€0–15/mo</td></tr>
+      <tr><td>SMS gateway — mobile verification (~€0.06 / SMS)</td><td class="r">€5–25/mo</td></tr>
+      <tr><td>AI / LLM usage — search &amp; chatbot (Phase 3)</td><td class="r">€10–60/mo</td></tr>
+      <tr><td>Error monitoring (Sentry — free tier)</td><td class="r">€0</td></tr>
+      <tr class="sub"><td>Typical monthly total</td><td class="r">≈ €20–220/mo (€250–2,600/yr)</td></tr>
+      <tr class="band"><td colspan="2">One-time / annual &amp; per-transaction</td></tr>
+      <tr><td>Payment processing (Stripe / PayPal)</td><td class="r">~1.5% + €0.25 / EU card txn</td></tr>
+      <tr><td>Apple Developer Program (iOS app — Phase 3)</td><td class="r">≈ €90/yr</td></tr>
+      <tr><td>Google Play Console (Android app — Phase 3)</td><td class="r">≈ €25 one-time</td></tr>
+      <tr><td>SSL certificates (Let’s Encrypt)</td><td class="r">€0</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">All figures are approximate — confirm against current provider pricing. Payment processing is charged per transaction, not as a fixed monthly fee. AI usage and app-store fees apply only once those features ship in Phase 3.</div>
+</section>
+
+<section id="assumptions">
+  <p class="eyebrow">21 — Assumptions &amp; questions</p>
+  <h2>Assumptions, exclusions &amp; open questions</h2>
+  <h3>Assumptions</h3>
+  <ul>
+    <li>Prices are indicative development allocations for an initial build; final quotes depend on confirmed scope, and each phase is delivered and invoiced in sequence.</li>
+    <li>All prices are development only and exclude hosting, domain and every third-party subscription / usage fee (estimated in <a href="#hosting">§20</a>): payment transaction fees, SMS gateway, object storage, email service, AI / LLM usage, maps / other APIs and app-store fees.</li>
+  </ul>
+  <h3>Exclusions</h3>
+  <ul><li>Native mobile app, reviews, participation history, advanced matching, AI features and the support chatbot — planned for Phase 3.</li></ul>
+  <h3>Open questions to confirm</h3>
+  <ul>
+    <li><strong>Subscription tiers:</strong> confirm the four tiers (Basic free + Bronze / Silver / Gold) and define exactly what each one unlocks.</li>
+    <li><strong>Organisation monetization:</strong> free signup only, or also paid tiers in addition to payable services?</li>
+    <li><strong>Verification badge:</strong> one-time or recurring payment? Who verifies credentials, and against which authority (ordre des médecins)?</li>
+    <li><strong>Auto-generated contracts:</strong> who supplies the base template, and legal review is needed (medical-staffing liability).</li>
+    <li><strong>Teams:</strong> can a professional lead several teams and be a member of others at once? Who can remove a member, and what happens to a team application if a member leaves? Can an organiser invite a whole team, or only an individual who then brings the team?</li>
+    <li><strong>Team applications:</strong> how is payment / contracting handled for a team engagement — one contract for the team, or one per member?</li>
+    <li><strong>Private search:</strong> confirm scope now that team composition is out — is it a shortlist only, and what SLA / pricing model applies?</li>
+    <li><strong>AI features:</strong> which model / provider (EU-hosted for GDPR?), what data may be sent to it, and what is the acceptable running-cost ceiling?</li>
+    <li><strong>Support chatbot:</strong> scope for the first release — FAQ / triage only, or acting on the account? Escalation path to a human.</li>
+    <li><strong>Organisation profile:</strong> finalise the full field list, formats and which fields are mandatory.</li>
+    <li><strong>Reviews &amp; ratings:</strong> mutual (both sides) or one-way? Public or private by default?</li>
+    <li><strong>GDPR:</strong> sensitive medical &amp; credential data — EU / France hosting, consent management, data export / erasure, document encryption and audit logs.</li>
+    <li><strong>Availability model</strong> for professionals (calendar vs. simple ranges).</li>
+    <li><strong>Payment currency and VAT</strong> handling.</li>
+  </ul>
+</section>
+
+<footer>Working draft · 11 July 2026 · prepared for client review. Diagrams rendered with Mermaid.</footer>
+</div>
+</main>
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad:true,
+    theme:'base',
+    themeVariables:{
+      fontFamily:'Inter, system-ui, sans-serif',
+      primaryColor:'#EAF3F3', primaryTextColor:'#10303B', primaryBorderColor:'#0C6B74',
+      lineColor:'#6B7E86', secondaryColor:'#FDEEE9', tertiaryColor:'#F3F7F7',
+      noteBkgColor:'#FDEEE9', noteBorderColor:'#E4694E', actorBkg:'#EAF3F3', actorBorder:'#0C6B74'
+    }
+  });
+</script>
+<script>
+  const toggle=document.querySelector('.nav-toggle');
+  const sidebar=document.querySelector('.sidebar');
+  toggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+  const links=[...sidebar.querySelectorAll('a')];
+  links.forEach(a=>a.addEventListener('click',()=>sidebar.classList.remove('open')));
+  const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active')); const a=map.get(e.target.id); if(a)a.classList.add('active'); } });
+  },{rootMargin:'-12% 0px -80% 0px',threshold:0});
+  document.querySelectorAll('main section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

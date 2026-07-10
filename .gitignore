@@ -1,0 +1,6 @@
+# internal / non-public material — keep out of a public Pages repo
+claude-project-instructions.md
+technical_internal.html
+.test-git/
+.DS_Store
+Thumbs.db
