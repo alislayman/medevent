@@ -1,6 +1,18 @@
+# This repository is PUBLIC and served by GitHub Pages. Anything committed to
+# `main` is world-readable. Application code and internal notes live in the
+# private `medonfield` repository.
+
 # internal / non-public material — keep out of a public Pages repo
 claude-project-instructions.md
 technical_internal.html
-.test-git/
+testing.md
+*-email.md
+*-project-export*.md
+
+# environment — NEVER commit real secrets
+.env
+.env.*
+
+# os
 .DS_Store
 Thumbs.db
