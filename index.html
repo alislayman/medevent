@@ -164,7 +164,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
 <button class="nav-toggle" aria-label="Toggle contents">☰</button>
 <div class="layout">
 <aside class="sidebar">
-  <div class="brand">Medical Event Staffing Platform<small>Scope agreement · rev. 2</small></div>
+  <div class="brand">Medical Event Staffing Platform<small>Scope agreement · rev. 3</small></div>
   <nav>
   <ul class="toc">
     <li><a href="#overview">Overview</a></li>
@@ -189,7 +189,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
     <li><a href="#roadmap">Roadmap &amp; pricing</a></li>
     <li><a href="#hosting">Hosting &amp; running costs</a></li>
     <li><a href="#assumptions">Assumptions &amp; questions</a></li>
-    <li><a href="#meeting-29-07-2026">Meeting 29/07/2026</a></li>
+    <li><a href="#meeting-29-07-2026">Agreed features log</a></li>
   </ul>
   </nav>
 </aside>
@@ -200,7 +200,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
     <p class="hero-eyebrow">Scope agreement</p>
     <h1 class="hero-title">Medical Event Staffing Platform</h1>
     <p class="hero-sub">A two-sided marketplace connecting medical professionals — doctors, nurses, officials, cutmen, ambulance staff — with event organisers who need qualified on-site medical coverage.</p>
-    <div class="hero-meta"><span>Rev. 2 · 30 Jul 2026</span><span>Incorporates meeting of 29 Jul 2026</span><span>Markets · EU + US</span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
+    <div class="hero-meta"><span>Rev. 3 · 30 Jul 2026</span><span>Meeting 29 Jul + notes 30 Jul</span><span>Markets · EU + US</span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
   </div>
   <svg class="ecg" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,40 250,40 292,40 306,15 320,66 334,28 348,40 610,40 700,40 714,10 728,70 742,40 902,40 946,40 960,20 974,60 988,40 1200,40"/></svg>
 </header>
@@ -211,7 +211,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
   <p class="eyebrow">01 — Overview</p>
   <h2>Overview</h2>
   <p class="lead">The platform connects medical professionals with event organisers who need medical staff on site — sports competitions, combat-sports events and public gatherings.</p>
-  <div class="rule"><strong>Status of this document.</strong> This revision incorporates every point raised in the client meeting of <strong>29 July 2026</strong> and is intended to serve as the <strong>agreed scope of the project</strong>. Section <a href="#meeting-29-07-2026">23</a> lists each item discussed in that meeting, where it has been specified, and the phase it is assigned to.</div>
+  <div class="rule"><strong>Status of this document.</strong> This revision incorporates every point raised in the client meeting of <strong>29 July 2026</strong> and the follow-up notes of <strong>30 July 2026</strong>, and is intended to serve as the <strong>agreed scope of the project</strong>. Section <a href="#meeting-29-07-2026">23</a> lists each item agreed, where it has been specified, and the phase it is assigned to.</div>
   <h3>Two user types</h3>
   <ul>
     <li><strong>Professionals</strong> — build a verified profile, set specialties, trainings, availability and experience, then search and apply for events. They can also form teams with their peers and apply together.</li>
@@ -511,6 +511,11 @@ classDiagram
     +decimal remuneration
     +string currency
   }
+  class Sport {
+    +string name
+    +string slug
+    +bool active
+  }
   class Material {
     +string name
     +string category
@@ -596,6 +601,7 @@ classDiagram
   User "1" --> "0..*" PlanGrant : granted
   PlanGrant "*" --> "1" Plan : for
   OrganisationProfile "1" --> "0..*" Event : posts
+  Event "*" --> "1" Sport : discipline
   Event "1" --> "1" EventCoverage : offers
   Event "1" --> "0..*" EventMaterial : provides
   EventMaterial "*" --> "1" Material : of
@@ -915,6 +921,7 @@ stateDiagram-v2
   <h3>Event creation (by organiser)</h3>
   <ul>
     <li>Details: title, date(s), location, budget or range.</li>
+    <li><strong>Sport / discipline</strong> — football, basketball, MMA and so on. Held as a reference entity in the admin panel, shown on the event and usable as a search filter (<a href="#search">§11</a>).</li>
     <li><strong>Roles and headcount, role by role</strong> — for example 2 doctors, 3 nurses, 1 ambulance crew — with a <strong>total number of professionals</strong> derived from the breakdown and shown on the event.</li>
     <li><strong>Lead requirement:</strong> on the médecin role, the organiser indicates whether that role is required as a lead.</li>
     <li><strong>Imagery:</strong> a <strong>banner image</strong> and a <strong>circular profile image</strong>. If no banner is supplied, the banner section is not rendered at all.</li>
@@ -937,8 +944,10 @@ stateDiagram-v2
   </ul>
 
   <h3>Salary negotiation</h3>
-  <div class="rule"><strong>Rule.</strong> A professional may propose a salary different from the one advertised. The organiser can then <strong>refuse and keep the initial salary</strong>, <strong>accept the professional's amount</strong>, or <strong>counter with an amount in between</strong> the two.</div>
+  <div class="rule"><strong>Rule.</strong> A professional on a <strong>Gold</strong> subscription may propose a salary different from the one advertised. The organiser can then <strong>refuse and keep the initial salary</strong>, <strong>accept the professional's amount</strong>, or <strong>counter with an amount in between</strong> the two.</div>
   <ul>
+    <li>Example: the event advertises 300; a Gold professional applies asking 350; the organiser accepts 350, holds at 300, or counters at, say, 325.</li>
+    <li>Professionals below Gold apply at the advertised amount; the counter-offer control is replaced by an upgrade prompt.</li>
     <li>Every proposal is stored with its author and outcome, giving a full negotiation history on the application.</li>
     <li>Negotiation is reflected in the application lifecycle (<a href="#flows">§5</a>).</li>
   </ul>
@@ -1008,13 +1017,21 @@ stateDiagram-v2
   <h3>Organiser → professionals</h3>
   <ul>
     <li>Filters: type and subcategory, specialty, certifications, languages, availability, verification status, location, licence country.</li>
+    <li>Each result shows, on the card itself:
+      <ul>
+        <li>the <strong>flags of the countries where the professional is licensed to practise</strong>, so an organiser can see at a glance whether he may work their event;</li>
+        <li>the <strong>languages he speaks</strong>.</li>
+      </ul>
+    </li>
     <li>Each result carries a <strong>hint icon</strong>: hovering or tapping it reveals more detail about the professional — experience and event volume, trainings, languages and other profile highlights — without leaving the results list.</li>
     <li>The team a professional belongs to is visible from the result.</li>
   </ul>
 
   <h3>Professional → events</h3>
   <ul>
-    <li>Filters: role, specialty, location, date, coverage offered, materials provided.</li>
+    <li>Filters: role, specialty, location, date, <strong>sport</strong> (football, basketball, MMA, …), coverage offered, materials provided.</li>
+    <li><strong>Remuneration filter</strong> — filtering by pay is reserved for <strong>Silver and Gold</strong> subscribers. Further tier-gated filters are to be confirmed by the client.</li>
+    <li>The sport is shown on every event card alongside the role breakdown.</li>
     <li><strong>Only upcoming events are shown</strong> — past events never appear in search.</li>
     <li>Each result shows the <strong>headcount by role</strong> (x doctors, y nurses, …) and the <strong>total number of professionals</strong> sought.</li>
     <li><strong>Result ordering</strong> reflects the professional's own relationship to each event, in this order:
@@ -1022,6 +1039,12 @@ stateDiagram-v2
     </li>
     <li>Each result displays that <strong>status</strong> explicitly, and events he cannot apply to are marked <strong>“not available”</strong> rather than removed.</li>
     <li>VIP organisations' events and promoted events appear above the rest (<a href="#vip">§17</a>).</li>
+  </ul>
+
+  <h3>Map view</h3>
+  <ul>
+    <li>Events can be browsed on a <strong>map</strong> as well as in a list, with the two views sharing the same filter set — including sport and the tier-gated remuneration filter.</li>
+    <li>VIP and promoted events are distinguished on the map as they are in the list (<a href="#vip">§17</a>).</li>
   </ul>
 
   <h3>Matching</h3>
@@ -1036,7 +1059,14 @@ stateDiagram-v2
   <h3>Professional tiers (monthly)</h3>
   <ul>
     <li>Basic (free) + Bronze + Silver + Gold.</li>
-    <li>What each tier unlocks remains <strong>to be defined</strong> — see <a href="#assumptions">§22</a>. One entitlement is already fixed: applying to VIP events is restricted to <strong>Gold</strong>.</li>
+    <li>What each tier unlocks is <strong>largely still to be defined</strong> — see <a href="#assumptions">§22</a>. Three entitlements are already fixed:
+      <ul>
+        <li><strong>Gold</strong> — applying to VIP events (<a href="#vip">§17</a>).</li>
+        <li><strong>Gold</strong> — proposing a salary other than the advertised one (<a href="#events">§9</a>).</li>
+        <li><strong>Silver and Gold</strong> — filtering event search by remuneration (<a href="#search">§11</a>).</li>
+      </ul>
+    </li>
+    <li>Entitlements are held as data against each tier, not written into the code, so the plan definitions can be settled and revised without a release.</li>
   </ul>
   <h3>Organisation</h3>
   <ul><li>Free signup; organisations pay for premium services (<a href="#payable">§13</a>) and for VIP or promoted placement (<a href="#vip">§17</a>) rather than a subscription.</li></ul>
@@ -1188,6 +1218,12 @@ stateDiagram-v2
     <li>The same Gold-only restriction on applications applies.</li>
   </ul>
 
+  <h3>Visual treatment</h3>
+  <ul>
+    <li>VIP events are styled <strong>gold on a black background</strong>, in list, map and detail views, so a marquee event — a UFC card, an international championship — reads as premium at a glance.</li>
+    <li>The treatment is derived from the tier palette variables rather than hard-coded, so it stays consistent with the Basic / Bronze / Silver / Gold styling used elsewhere.</li>
+  </ul>
+
   <h3>Promoted events</h3>
   <ul>
     <li>An organisation can <strong>pay for top placement, event by event</strong>, independently of VIP status.</li>
@@ -1217,6 +1253,7 @@ stateDiagram-v2
     <li><strong>Professional sub-categories</strong> — the second layer of the role taxonomy (<a href="#roles">§2</a>).</li>
     <li><strong>Conditions to sign, per profile type</strong> — the checkboxes a user must tick to create a profile; versioned so acceptances stay traceable.</li>
     <li><strong>Materials</strong> — the equipment an organiser can declare as provided on an event (<a href="#events">§9</a>).</li>
+    <li><strong>Sports</strong> — the disciplines an event can be attached to and filtered by (<a href="#events">§9</a>, <a href="#search">§11</a>).</li>
     <li><strong>Support motifs</strong> — the reasons available on a contact-support request (<a href="#comms">§14</a>).</li>
     <li><strong>Service catalogue</strong> — payable services, their audience and amounts, including €0 items (<a href="#payable">§13</a>).</li>
     <li>Further entities to be added as they are identified.</li>
@@ -1416,7 +1453,9 @@ stateDiagram-v2
   <ul><li>Native mobile app, reviews, participation history, advanced matching, AI features, support chatbot, VIP and promoted placement, and the growth tooling (yearly billing, referrals, vouchers, discounts) — planned for Phase 3.</li></ul>
   <h3>Open questions carried from the meeting of 29/07/2026</h3>
   <ul>
-    <li><strong>Define the plans.</strong> Confirm the four tiers (Basic free + Bronze / Silver / Gold) and define exactly what each one unlocks. Gold-only access to VIP events is already fixed; everything else is open.</li>
+    <li><strong>Define the plans.</strong> Confirm the four tiers (Basic free + Bronze / Silver / Gold) and define exactly what each one unlocks. Three entitlements are fixed — Gold applies to VIP events, Gold counter-offers on salary, Silver and Gold filter by remuneration — everything else is open, and it is the single largest blocker on development.</li>
+    <li><strong>Further tier-gated filters.</strong> Beyond remuneration, which additional search filters should be reserved for Silver and Gold — the client indicated he would review this in detail.</li>
+    <li><strong>Sport taxonomy.</strong> The initial list of sports, whether it is flat or grouped (combat sports → MMA, boxing), and whether an event may carry more than one.</li>
     <li><strong>Subcategory common logic.</strong> How the second taxonomy layer behaves across professional types — whether subcategories are shared or strictly per type, and which profile fields they drive.</li>
     <li><strong>SMS and email providers.</strong> To be selected and the details sent to Soufiane.</li>
   </ul>
@@ -1441,9 +1480,11 @@ stateDiagram-v2
 </section>
 
 <section id="meeting-29-07-2026">
-  <p class="eyebrow">23 — Meeting log</p>
-  <h2>Features discussed in meeting 29/07/2026</h2>
-  <p>Every point raised in the client meeting of <strong>29 July 2026</strong>, kept here as a record of when it was agreed. Each item has been specified in the section shown and assigned to a phase; this table is a index into the document, not a substitute for it.</p>
+  <p class="eyebrow">23 — Agreed features log</p>
+  <h2>Agreed features log</h2>
+  <p>Every point the client has raised, kept here as a record of when it was agreed. Each item has been specified in the section shown and assigned to a phase; these tables are an index into the document, not a substitute for it.</p>
+
+  <h3>Batch 1 — meeting of 29/07/2026</h3>
   <div class="tbl-scroll">
   <table class="log">
     <thead><tr><th>#</th><th>Feature agreed</th><th>Specified in</th><th>Phase</th></tr></thead>
@@ -1530,10 +1571,38 @@ stateDiagram-v2
     </tbody>
   </table>
   </div>
-  <p class="cap">58 items agreed on 29 July 2026. Phase 1 · must-have MVP · Phase 2 · trust, teams and back-office · Phase 3 · mobile, AI and growth.</p>
+  <p class="cap">58 items agreed on 29 July 2026.</p>
+
+  <h3>Batch 2 — follow-up notes of 30/07/2026</h3>
+  <p>Sent by the client after reviewing the working screens. Items 65 and 67 <strong>refine rules already agreed in batch 1</strong> by attaching them to a subscription tier, so they change what Gold and Silver are worth.</p>
+  <div class="tbl-scroll">
+  <table class="log">
+    <thead><tr><th>#</th><th>Feature agreed</th><th>Specified in</th><th>Phase</th></tr></thead>
+    <tbody>
+
+      <tr class="grp"><td colspan="4">Organiser searching for a professional</td></tr>
+      <tr><td class="n">59</td><td>Show the flags of the countries where the professional is licensed to practise</td><td class="s"><a href="#search">§11</a>, <a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">60</td><td>Show the languages spoken on each professional result</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Organiser searching for events</td></tr>
+      <tr><td class="n">61</td><td>Record the sport on each event, held as a reference entity</td><td class="s"><a href="#events">§9</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">62</td><td>Add sport to the event search filters — football, basketball, MMA and so on</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">63</td><td>Style VIP events gold on a black background, for marquee events such as UFC cards and international championships</td><td class="s"><a href="#vip">§17</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">64</td><td>Each event page shows the remuneration, the transport and accommodation coverage, and the materials made available</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">65</td><td>The salary counter-offer is reserved for <strong>Gold</strong> — advertised 300, a Gold professional may apply asking 350 <em>(refines item 18)</em></td><td class="s"><a href="#events">§9</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Map view &amp; event listing</td></tr>
+      <tr><td class="n">66</td><td>Filter the map view and the listing by sport, sharing one filter set across both views</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">67</td><td>Filtering by remuneration reserved for <strong>Silver and Gold</strong> <em>(new tier entitlement)</em></td><td class="s"><a href="#search">§11</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">68</td><td>Further tier-gated filters — the client will review and confirm which</td><td class="s"><a href="#assumptions">§22</a></td><td class="p"><span class="ph phx">open</span></td></tr>
+
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">68 items in total — 58 agreed on 29 July 2026, 10 added on 30 July 2026. Phase 1 · must-have MVP · Phase 2 · trust, teams and back-office · Phase 3 · mobile, AI and growth.</p>
 </section>
 
-<footer>Scope agreement · rev. 2 · 30 July 2026 · incorporating the client meeting of 29 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
+<footer>Scope agreement · rev. 3 · 30 July 2026 · incorporating the client meeting of 29 July 2026 and the follow-up notes of 30 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
 </div>
 </main>
 </div>
