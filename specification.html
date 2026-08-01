@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medical Event Staffing Platform — Scope Agreement</title>
+<meta name="description" content="Agreed scope: product specification, technical stack, data model, flows, roadmap and pricing for a marketplace connecting medical professionals with event organisers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10303B; --body:#3A4E56; --muted:#6B7E86;
+  --primary:#0C6B74; --primary-2:#0A555C; --accent:#E4694E;
+  --paper:#F4F7F7; --surface:#FFFFFF; --line:#DCE6E7; --line-2:#C6D3D4;
+  --code:#EDF4F4;
+  --display:'Space Grotesk',sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+  --sbw:266px; --maxw:820px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--accent)}
+
+/* layout */
+.layout{display:flex;align-items:flex-start}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--ink);color:#CFE0E2;padding:26px 18px 40px}
+.brand{font-family:var(--display);font-weight:700;color:#fff;font-size:15px;letter-spacing:.2px;line-height:1.35;margin-bottom:4px}
+.brand small{display:block;font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-top:8px}
+.home-link{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#9DBABD;border:1px solid #274b55;border-radius:999px;padding:5px 12px}
+.home-link:hover{background:#173E49;color:#fff}
+.toc{list-style:none;margin:22px 0 0;padding:0;counter-reset:toc}
+.toc li{counter-increment:toc}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:6px 10px;border-radius:7px;color:#AFC4C7;font-size:13.5px;line-height:1.35;transition:background .15s,color .15s}
+.toc a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:10.5px;color:#5E7C80;flex:0 0 auto}
+.toc a:hover{background:#173E49;color:#fff}
+.toc a.active{background:var(--primary);color:#fff}
+.toc a.active::before{color:#Bfeaea}
+
+.content{flex:1 1 auto;min-width:0;padding:0 clamp(20px,5vw,64px) 90px}
+.wrap{max-width:var(--maxw);margin:0 auto}
+
+/* hero */
+.hero{position:relative;margin:0 calc(-1*clamp(20px,5vw,64px)) 46px;background:var(--ink);color:#EAF3F3;overflow:hidden}
+.hero-inner{max-width:var(--maxw);margin:0 auto;padding:64px clamp(20px,5vw,64px) 74px}
+.hero-eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:3px;font-size:11px;color:var(--accent);margin:0 0 18px}
+.hero-title{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.5px;color:#fff;margin:0 0 16px}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:#B9D0D2;max-width:60ch;margin:0 0 26px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta span{font-family:var(--mono);font-size:11px;letter-spacing:.4px;color:#9DBABD;border:1px solid #274b55;border-radius:999px;padding:5px 12px}
+.ecg{position:absolute;left:0;bottom:0;width:100%;height:70px;display:block}
+.ecg polyline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;
+  stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 2.4s ease forwards .2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* sections */
+section{padding:30px 0 8px;scroll-margin-top:20px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:2.5px;font-size:11px;color:var(--primary);margin:0 0 6px}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(23px,3vw,30px);line-height:1.15;letter-spacing:-.4px;color:var(--ink);margin:0 0 18px}
+h3{font-family:var(--display);font-weight:600;font-size:16.5px;color:var(--ink);margin:26px 0 8px}
+p{margin:0 0 14px;max-width:72ch}
+ul{margin:0 0 16px;padding:0;list-style:none;max-width:72ch}
+li{position:relative;padding-left:20px;margin:0 0 7px}
+li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;background:var(--primary);border-radius:1px}
+li ul{margin:8px 0 4px}
+li ul li::before{background:var(--accent);border-radius:50%;width:5px;height:5px}
+strong{color:var(--ink);font-weight:600}
+.lead{font-size:17px;color:var(--body)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 6px;border-radius:5px;color:var(--primary-2)}
+
+/* callout */
+.note{border-left:3px solid var(--accent);background:#FCF1ED;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:14.5px;color:#7a4436;max-width:72ch}
+.note strong{color:#7a4436}
+.rule{border-left:3px solid var(--primary);background:#EAF3F3;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:14.5px;color:var(--primary-2);max-width:72ch}
+.rule strong{color:var(--primary-2)}
+
+/* diagram card */
+.figure{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:18px 0 8px;overflow:hidden;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.figure-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line);background:#F7Fafa}
+.figure-h .t{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary)}
+.figure-h .k{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.figure-b{padding:16px;overflow-x:auto}
+.mermaid{display:flex;justify-content:center;min-width:0}
+.cap{font-size:13px;color:var(--muted);margin:4px 2px 22px}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:8px 0 6px;font-size:14.5px;overflow:hidden;border:1px solid var(--line);border-radius:10px}
+.tbl thead th{background:var(--ink);color:#fff;font-family:var(--display);font-weight:600;text-align:left;padding:10px 14px;font-size:13px}
+.tbl thead th.r{text-align:right}
+.tbl td{padding:9px 14px;border-top:1px solid var(--line)}
+.tbl td.r{text-align:right;font-family:var(--mono);font-size:13px;white-space:nowrap}
+.tbl tr.band td{background:#E9F1F1;font-weight:600;color:var(--ink);font-family:var(--display);font-size:12.5px;letter-spacing:.3px}
+.tbl tr.sub td{background:#F3F7F7;font-weight:600;color:var(--ink)}
+.tbl tr.total td{background:#DEEFEF;font-weight:700;color:var(--ink)}
+.tbl-scroll{overflow-x:auto}
+
+/* meeting log table */
+.log{width:100%;border-collapse:collapse;font-size:13.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:8px 0 6px}
+.log thead th{background:var(--ink);color:#fff;font-family:var(--display);font-weight:600;text-align:left;padding:9px 12px;font-size:12.5px}
+.log td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+.log td.n{font-family:var(--mono);font-size:11.5px;color:var(--muted);width:36px}
+.log td.s{font-family:var(--mono);font-size:11.5px;color:var(--primary-2);white-space:nowrap}
+.log td.p{white-space:nowrap;width:64px}
+.log tr.grp td{background:#E9F1F1;font-family:var(--display);font-weight:600;color:var(--ink);font-size:12.5px;letter-spacing:.3px}
+.ph{font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;padding:2px 8px;border-radius:999px;display:inline-block;border:1px solid transparent}
+.ph1{background:#0C6B74;color:#fff}
+.ph2{background:#EEF5F5;color:var(--primary-2);border-color:var(--line-2)}
+.ph3{background:#FDEEE9;color:#a24b34;border-color:#f0c3b6}
+.phx{background:#F0F2F2;color:var(--muted);border-color:var(--line-2)}
+
+/* pills */
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--primary-2);background:#EEF5F5;margin-right:6px}
+
+/* stack grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:18px 0 8px;padding:0;list-style:none;max-width:none}
+.grid li{margin:0;padding:0}
+.grid li::before{display:none}
+.card{height:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 17px;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.card .k{font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.card h4{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink);margin:0 0 6px}
+.card p{font-size:13.5px;line-height:1.55;color:var(--body);margin:0;max-width:none}
+
+/* roadmap phases */
+.phase{border:1px solid var(--line);border-radius:14px;padding:0;margin:16px 0;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(16,48,59,.04)}
+.phase-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);background:#F7Fafa}
+.phase-top .num{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink)}
+.phase-top .num span{color:var(--primary)}
+.phase-top .sum{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--ink);background:#DEEFEF;border:1px solid var(--line-2);border-radius:999px;padding:3px 12px;white-space:nowrap}
+.prio{font-family:var(--mono);font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid transparent}
+.prio-1{background:#0C6B74;color:#fff}
+.prio-2{background:#EEF5F5;color:var(--primary-2);border-color:var(--line-2)}
+.prio-3{background:#FDEEE9;color:#a24b34;border-color:#f0c3b6}
+.phase-b{padding:6px 18px 10px}
+.feat{width:100%;border-collapse:collapse;font-size:14px}
+.feat td{padding:9px 2px;border-top:1px solid var(--line);vertical-align:top}
+.feat tr:first-child td{border-top:0}
+.feat td.r{text-align:right;font-family:var(--mono);font-size:12.5px;color:var(--primary-2);white-space:nowrap;padding-left:14px}
+.feat td .d{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.totline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--ink);color:#EAF3F3;border-radius:12px;padding:14px 18px;margin:18px 0 6px}
+.totline .lab{font-family:var(--display);font-weight:600;font-size:14.5px;color:#fff}
+.totline .val{margin-left:auto;font-family:var(--mono);font-size:16px;color:#fff}
+.totline .sub{font-family:var(--mono);font-size:11.5px;color:#9DBABD}
+
+/* nav toggle (mobile) */
+.nav-toggle{display:none;position:fixed;z-index:40;top:14px;left:14px;background:var(--ink);color:#fff;border:0;border-radius:9px;width:44px;height:44px;font-size:20px;cursor:pointer;align-items:center;justify-content:center}
+
+footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+
+@media (max-width:900px){
+  .nav-toggle{display:flex}
+  .sidebar{position:fixed;z-index:39;left:0;top:0;transform:translateX(-100%);transition:transform .22s ease;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .sidebar.open{transform:none}
+  .content{padding-top:64px}
+  .hero{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ecg polyline{animation:none;stroke-dashoffset:0}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+</style>
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle contents">☰</button>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">Medical Event Staffing Platform<small>Scope agreement · rev. 3</small></div>
+  <a class="home-link" href="./index.html">&#8592; Project home</a>
+  <nav>
+  <ul class="toc">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#roles">Roles, taxonomy &amp; use cases</a></li>
+    <li><a href="#stack">Technical stack</a></li>
+    <li><a href="#data">Data model</a></li>
+    <li><a href="#flows">Key flows</a></li>
+    <li><a href="#pages">Public pages</a></li>
+    <li><a href="#pro-profile">Professional profile</a></li>
+    <li><a href="#org-profile">Organisation profile &amp; verification</a></li>
+    <li><a href="#events">Events, coverage &amp; contracts</a></li>
+    <li><a href="#teams">Teams</a></li>
+    <li><a href="#search">Search, matching &amp; gating</a></li>
+    <li><a href="#subs">Subscriptions &amp; payments</a></li>
+    <li><a href="#payable">Payable services &amp; catalogue</a></li>
+    <li><a href="#comms">Communication</a></li>
+    <li><a href="#verify">Verification &amp; security</a></li>
+    <li><a href="#i18n">Languages &amp; markets</a></li>
+    <li><a href="#vip">Visibility &amp; promotion (VIP)</a></li>
+    <li><a href="#mobile">Mobile strategy</a></li>
+    <li><a href="#admin">Admin panel</a></li>
+    <li><a href="#roadmap">Roadmap &amp; pricing</a></li>
+    <li><a href="#hosting">Hosting &amp; running costs</a></li>
+    <li><a href="#assumptions">Assumptions &amp; questions</a></li>
+    <li><a href="#meeting-29-07-2026">Agreed features log</a></li>
+  </ul>
+  </nav>
+</aside>
+
+<main class="content">
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Scope agreement</p>
+    <h1 class="hero-title">Medical Event Staffing Platform</h1>
+    <p class="hero-sub">A two-sided marketplace connecting medical professionals — doctors, nurses, officials, cutmen, ambulance staff — with event organisers who need qualified on-site medical coverage.</p>
+    <div class="hero-meta"><span>Rev. 3 · 30 Jul 2026</span><span>Meeting 29 Jul + notes 30 Jul</span><span>Markets · EU + US</span><span><a href="./timeline.html" style="color:#EAF3F3">Project timeline &#8594;</a></span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
+  </div>
+  <svg class="ecg" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,40 250,40 292,40 306,15 320,66 334,28 348,40 610,40 700,40 714,10 728,70 742,40 902,40 946,40 960,20 974,60 988,40 1200,40"/></svg>
+</header>
+
+<div class="wrap">
+
+<section id="overview">
+  <p class="eyebrow">01 — Overview</p>
+  <h2>Overview</h2>
+  <p class="lead">The platform connects medical professionals with event organisers who need medical staff on site — sports competitions, combat-sports events and public gatherings.</p>
+  <div class="rule"><strong>Status of this document.</strong> This revision incorporates every point raised in the client meeting of <strong>29 July 2026</strong> and the follow-up notes of <strong>30 July 2026</strong>, and is intended to serve as the <strong>agreed scope of the project</strong>. Section <a href="#meeting-29-07-2026">23</a> lists each item agreed, where it has been specified, and the phase it is assigned to.</div>
+  <h3>Two user types</h3>
+  <ul>
+    <li><strong>Professionals</strong> — build a verified profile, set specialties, trainings, availability and experience, then search and apply for events. They can also form teams with their peers and apply together.</li>
+    <li><strong>Organisations</strong> — post events with requirements, attach a contract, and search and invite professionals. They can see which team a professional belongs to and its members.</li>
+  </ul>
+  <h3>Core loop</h3>
+  <ul>
+    <li>An organiser creates an event with requirements, coverage and materials; the event is either public or sent privately to support.</li>
+    <li>Professionals discover events and apply; organisers review the applicants and choose. Organisers can also discover professionals directly and invite them.</li>
+    <li>Professionals can form teams, invite peers and apply together as a team; organisers can view a professional's team and its members.</li>
+    <li>The two parties agree on remuneration — the professional may counter the proposed salary — then agree on a contract and the engagement proceeds.</li>
+  </ul>
+  <h3>Markets covered</h3>
+  <ul>
+    <li>The platform serves <strong>certified EU countries and the United States only</strong>. This coverage is stated publicly on the site (<a href="#pages">§6</a>) and applied to the country lists used in profiles, licences and events.</li>
+    <li>A professional licensed in one country can still see and apply to events in another; where he holds no local licence he can request a paid <strong>accompaniment</strong> service (<a href="#payable">§13</a>).</li>
+  </ul>
+  <h3>How it makes money</h3>
+  <ul>
+    <li>Monthly subscription tiers for professionals — Basic, Bronze, Silver, Gold.</li>
+    <li>Free signup for organisations, with payable premium services drawn from a catalogue (<a href="#payable">§13</a>).</li>
+    <li>A paid verification badge for professionals.</li>
+    <li>VIP status for organisations and paid top placement for individual events (<a href="#vip">§17</a>).</li>
+  </ul>
+</section>
+
+<section id="roles">
+  <p class="eyebrow">02 — Roles, taxonomy &amp; use cases</p>
+  <h2>Roles, taxonomy &amp; use cases</h2>
+
+  <h3>Professional taxonomy — two layers</h3>
+  <p>Professional roles are organised in two levels: a <strong>professional type</strong> and, beneath it, a <strong>subcategory</strong>. Both levels are reference data maintained by the admin team (<a href="#admin">§19</a>, Entities → Professional sub-categories) rather than hard-coded.</p>
+  <ul>
+    <li><strong>Layer 1 — professional type:</strong> Médecin (doctor), Infirmier (nurse), Officiel (official), Cutman (combat-sports corner medic), Ambulancier (ambulance staff).</li>
+    <li><strong>Layer 2 — subcategory:</strong> a further breakdown attached to each type, editable from the admin panel.</li>
+  </ul>
+
+  <h3>Profile fields per type</h3>
+  <ul>
+    <li>A <strong>common core</strong> of fields shared by every professional, whatever the type.</li>
+    <li>A set of <strong>fields specific to each professional type</strong>, shown only for that type.</li>
+  </ul>
+
+  <h3>Lead logic</h3>
+  <div class="rule"><strong>Rule.</strong> Only a <strong>médecin</strong> can be a lead. A team must always have a lead, and that lead must be the médecin of the team — no other professional type may lead.</div>
+  <ul>
+    <li>When an organiser creates an event, he indicates <strong>on the médecin role</strong> whether that role is required as a lead.</li>
+    <li>When a médecin applies to an event, he chooses whether he is applying <strong>as lead</strong>.</li>
+    <li>Within a team, the médecin is the lead; leadership can be transferred only under the rules in <a href="#teams">§10</a>.</li>
+  </ul>
+
+  <h3>Conditions to sign (per account type)</h3>
+  <ul>
+    <li>Creating a profile requires the user to tick a configurable <strong>set of conditions</strong>.</li>
+    <li>The set is defined <strong>per account type</strong> — organisation, and per professional type.</li>
+    <li>The admin panel has a dedicated section to <strong>add, edit, remove, disable and enable</strong> these conditions (<a href="#admin">§19</a>).</li>
+    <li>The submit action stays <strong>disabled until every condition is checked</strong>.</li>
+    <li>Acceptance is recorded per user with a timestamp and the version of the condition accepted — this is what makes the contact-sharing rule in <a href="#comms">§14</a> enforceable.</li>
+  </ul>
+
+  <h3>Licences, countries &amp; accompaniment</h3>
+  <ul>
+    <li>A doctor holds a <strong>licence per country</strong>, recorded on his profile.</li>
+    <li>He can nevertheless <strong>see and apply to foreign events</strong> — visibility is not restricted by licence.</li>
+    <li>Where he holds no licence in the event's country, he can apply <strong>and request accompaniment</strong>: a service the platform provides to support him in practising there.</li>
+    <li>The accompaniment request is handled as a <strong>quotation (devis)</strong>, appears in the service catalogue, and is visible to the admin team.</li>
+  </ul>
+
+  <h3>Organisation</h3>
+  <ul><li>Event organisers — sports events, competitions and public events. Verified at the final stage of profile completion (<a href="#org-profile">§8</a>), and optionally flagged VIP (<a href="#vip">§17</a>).</li></ul>
+
+  <h3>Admin / Support (internal)</h3>
+  <ul><li>Maintains reference entities, verifies credentials, manages badges, handles service requests and quotations, messages users, moderates content and resolves disputes. Detailed in <a href="#admin">§19</a>.</li></ul>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Use-case diagram</span><span class="k">actors → capabilities · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+flowchart LR
+  prof([Professional]):::actor
+  org([Organiser]):::actor
+  adm([Admin / Support]):::actor
+  subgraph platform [Platform · all phases]
+    u1["Complete profile (stepper) &amp; availability"]
+    u2["Search &amp; apply to events"]
+    u3["Create teams &amp; invite peers"]
+    u4["Apply as a team · lead rules"]
+    u5["Get verified (paid badge)"]
+    u6["Subscribe to a plan"]
+    u7["Message users &amp; contact support"]
+    u8["Negotiate salary"]
+    u9["Request accompaniment abroad"]
+    u10["Post events, coverage &amp; materials"]
+    u11["Search &amp; invite professionals"]
+    u12["View a pro's team &amp; members"]
+    u13["Request catalogue services"]
+    u14["Request VIP / promote an event"]
+    u15["Verify credentials &amp; organisations"]
+    u16["Build &amp; send quotations"]
+    u17["Manage entities &amp; conditions"]
+    u18["Message users &amp; run analytics"]
+    bot(["Support chatbot"])
+  end
+  prof --- u1
+  prof --- u2
+  prof --- u3
+  prof --- u4
+  prof --- u5
+  prof --- u6
+  prof --- u7
+  prof --- u8
+  prof --- u9
+  org --- u10
+  org --- u11
+  org --- u12
+  org --- u13
+  org --- u14
+  org --- u7
+  org --- u8
+  org --- u1
+  adm --- u15
+  adm --- u16
+  adm --- u17
+  adm --- u18
+  prof -.-> bot
+  org -.-> bot
+  classDef actor fill:#FDEEE9,stroke:#E4694E,stroke-width:1.2px,color:#10303B;
+</pre></div>
+  </div>
+  <p class="cap">Who can do what across the platform, covering every phase. Subscriptions apply to professionals; messaging, salary negotiation, profile completion and the support chatbot are shared by professionals and organisers.</p>
+</section>
+
+<section id="stack">
+  <p class="eyebrow">03 — Technical stack</p>
+  <h2>Technical stack</h2>
+  <p>The backend language is fixed (Python). The rest is chosen for a robust, GDPR-appropriate build that also serves a future mobile app from one codebase.</p>
+  <ul class="grid">
+    <li><div class="card"><p class="k">Backend</p><h4>Django + Django REST Framework</h4><p>One clean, versioned API serving both the web app and the future mobile app, with a dedicated back-office for entities, verification, support and quotations.</p></div></li>
+    <li><div class="card"><p class="k">Frontend · web</p><h4>Next.js (React) + TypeScript</h4><p>Tailwind CSS and shadcn/ui for a responsive, accessible interface; server-side rendering for fast, SEO-friendly public pages.</p></div></li>
+    <li><div class="card"><p class="k">Mobile</p><h4>Responsive → PWA → native</h4><p>Responsive web first, then an installable PWA with push, then a native iOS + Android app via React Native / Expo.</p></div></li>
+    <li><div class="card"><p class="k">Database</p><h4>PostgreSQL</h4><p>Relational core with JSONB for flexible per-type profile fields and full-text search to power matching and filtering.</p></div></li>
+    <li><div class="card"><p class="k">Auth &amp; anti-bot</p><h4>JWT + reCAPTCHA</h4><p>Django auth with JWT for the API; reCAPTCHA on sign in, sign up, password reset and password change.</p></div></li>
+    <li><div class="card"><p class="k">Payments</p><h4>Stripe · PayPal</h4><p>Stripe (cards + tiers) first and PayPal later, with webhooks keeping subscription state in sync.</p></div></li>
+    <li><div class="card"><p class="k">File storage</p><h4>EU S3-compatible storage</h4><p>Encrypted object storage in the EU for avatars, event banners and sensitive credential documents, with server-side resizing.</p></div></li>
+    <li><div class="card"><p class="k">AI</p><h4>AI search &amp; support chatbot</h4><p>AI-assisted matching and ranking in search, plus a support chatbot layered on the same API in a later phase.</p></div></li>
+    <li><div class="card"><p class="k">Hosting</p><h4>EU / France · GDPR</h4><p>EU data residency (Scaleway, OVHcloud or Hetzner) for medical and credential data.</p></div></li>
+    <li><div class="card"><p class="k">Source &amp; CI/CD</p><h4>GitHub + GitHub Actions</h4><p>Automated lint → test → build → deploy; mobile builds via Expo EAS.</p></div></li>
+  </ul>
+  <div class="note">SMS and email providers are to be confirmed and their details sent to Soufiane — see <a href="#assumptions">§22</a>.</div>
+  <div class="figure">
+    <div class="figure-h"><span class="t">System architecture</span><span class="k">clients → API → services · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+flowchart TB
+  subgraph client [Clients]
+    web[Next.js Web App]
+    pwa[PWA · installable]
+    mob[React Native App]
+  end
+  subgraph infra [EU Hosting · GDPR]
+    api[Django + DRF API]
+    db[(PostgreSQL)]
+    obj[(Object Storage)]
+    ai[AI search &amp; chatbot service]
+  end
+  stripe[Stripe]
+  paypal[PayPal]
+  comms[Email / SMS]
+  captcha[reCAPTCHA]
+  web --> api
+  pwa --> api
+  mob --> api
+  web --> captcha
+  api --> captcha
+  api --> db
+  api --> obj
+  api --> ai
+  api --> stripe
+  api --> paypal
+  api --> comms
+</pre></div>
+  </div>
+</section>
+
+<section id="data">
+  <p class="eyebrow">04 — Data model</p>
+  <h2>Data model</h2>
+  <p>A simplified class diagram of the core entities and their relationships. Teams belong to professionals: a professional creates a team, peers join via the <code>TeamMembership</code> join, and a team can submit an application of its own. Organisations are not owners of teams — they can only view them. Reference data maintained in the admin panel (<code>ProfessionalCategory</code>, <code>ProfileCondition</code>, <code>Material</code>, <code>SupportMotif</code>, <code>ServiceCatalogItem</code>) is shown alongside the transactional entities.</p>
+  <div class="figure">
+    <div class="figure-h"><span class="t">Class diagram</span><span class="k">core entities · all phases</span></div>
+    <div class="figure-b"><pre class="mermaid">
+classDiagram
+  class User {
+    +int id
+    +string email
+    +string role
+    +bool emailVerified
+    +bool phoneVerified
+    +string preferredLocale
+  }
+  class ProfessionalProfile {
+    +string type
+    +string[] specialties
+    +int diplomaYear
+    +string university
+    +string country
+    +string eventVolumeRange
+    +json typeSpecificFields
+    +json availability
+    +string avatarUrl
+    +int completenessPct
+    +bool verified
+  }
+  class ProfessionalCategory {
+    +string name
+    +int level
+    +int parentId
+    +bool active
+  }
+  class OrganisationProfile {
+    +string name
+    +string type
+    +string country
+    +string requirements
+    +string logoUrl
+    +int completenessPct
+    +bool isVip
+  }
+  class OrganisationVerification {
+    +string method
+    +string businessDomain
+    +string status
+  }
+  class ProfileCondition {
+    +string accountType
+    +string label
+    +int version
+    +bool active
+  }
+  class ConditionAcceptance {
+    +datetime acceptedAt
+    +int conditionVersion
+  }
+  class Document {
+    +string type
+    +string fileUrl
+    +string status
+  }
+  class Training {
+    +string kind
+    +string name
+  }
+  class BoardRegistration {
+    +string departement
+    +date date
+    +string[] validCountries
+  }
+  class Certificate {
+    +string name
+    +date expiryDate
+  }
+  class Plan {
+    +string name
+    +decimal price
+    +string interval
+  }
+  class Subscription {
+    +string status
+    +string provider
+    +date periodEnd
+  }
+  class PlanGrant {
+    +decimal amountReceived
+    +string method
+    +bool excludeFromAnalytics
+    +int grantedByAdminId
+  }
+  class VerificationBadge {
+    +string status
+    +date grantedAt
+  }
+  class Event {
+    +string title
+    +date[] dates
+    +string location
+    +json roleHeadcount
+    +bool leadRequired
+    +string visibility
+    +string bannerUrl
+    +string avatarUrl
+    +bool isVip
+    +bool isPromoted
+    +string status
+  }
+  class EventCoverage {
+    +bool accommodation
+    +bool food
+    +bool transport
+    +decimal remuneration
+    +string currency
+  }
+  class Sport {
+    +string name
+    +string slug
+    +bool active
+  }
+  class Material {
+    +string name
+    +string category
+  }
+  class EventMaterial {
+    +int quantity
+  }
+  class Contract {
+    +string type
+    +string content
+  }
+  class Application {
+    +string status
+    +bool asTeam
+    +bool appliesAsLead
+    +bool accompanimentRequested
+  }
+  class SalaryProposal {
+    +decimal amount
+    +string proposedBy
+    +string status
+  }
+  class Invitation {
+    +string status
+  }
+  class Team {
+    +string name
+    +string avatarUrl
+    +int leadProfileId
+  }
+  class TeamMembership {
+    +string role
+    +bool isLead
+    +bool canApplyToEvents
+    +bool autoAcceptApplications
+  }
+  class Conversation {
+    +int id
+    +string kind
+  }
+  class Message {
+    +string body
+    +bool contactBlocked
+    +datetime sentAt
+  }
+  class SupportMotif {
+    +string label
+    +bool active
+  }
+  class SupportRequest {
+    +string body
+    +string status
+  }
+  class ServiceCatalogItem {
+    +string name
+    +string audience
+    +decimal amount
+    +bool active
+  }
+  class Quotation {
+    +decimal amount
+    +string status
+  }
+  class Review {
+    +int rating
+    +string comment
+    +bool isPrivate
+  }
+  User "1" --> "0..1" ProfessionalProfile : has
+  User "1" --> "0..1" OrganisationProfile : has
+  ProfessionalProfile "*" --> "1" ProfessionalCategory : typed by
+  ProfessionalCategory "1" --> "0..*" ProfessionalCategory : parent of
+  User "1" --> "0..*" ConditionAcceptance : signs
+  ConditionAcceptance "*" --> "1" ProfileCondition : of
+  OrganisationProfile "1" --> "0..1" OrganisationVerification : verified by
+  ProfessionalProfile "1" --> "0..*" Training : lists
+  ProfessionalProfile "1" --> "0..*" Certificate : holds
+  ProfessionalProfile "1" --> "0..*" BoardRegistration : registers
+  ProfessionalProfile "1" --> "0..*" Document : uploads
+  ProfessionalProfile "1" --> "0..1" VerificationBadge : may hold
+  User "1" --> "0..*" Subscription : subscribes
+  Subscription "*" --> "1" Plan : on
+  User "1" --> "0..*" PlanGrant : granted
+  PlanGrant "*" --> "1" Plan : for
+  OrganisationProfile "1" --> "0..*" Event : posts
+  Event "*" --> "1" Sport : discipline
+  Event "1" --> "1" EventCoverage : offers
+  Event "1" --> "0..*" EventMaterial : provides
+  EventMaterial "*" --> "1" Material : of
+  Event "1" --> "1" Contract : has
+  Event "1" --> "0..*" Application : receives
+  ProfessionalProfile "1" --> "0..*" Application : submits
+  Application "1" --> "0..*" SalaryProposal : negotiates
+  Event "1" --> "0..*" Invitation : sends
+  ProfessionalProfile "1" --> "0..*" Team : creates
+  Team "1" --> "0..*" TeamMembership : includes
+  ProfessionalProfile "1" --> "0..*" TeamMembership : joins
+  Team "1" --> "0..*" Application : applies as
+  Conversation "1" --> "0..*" Message : contains
+  User "1" --> "0..*" Message : sends
+  User "1" --> "0..*" SupportRequest : opens
+  SupportRequest "*" --> "1" SupportMotif : categorised by
+  Event "1" --> "0..*" Review : yields
+  OrganisationProfile "1" --> "0..*" Quotation : requests
+  Quotation "*" --> "1" ServiceCatalogItem : for
+</pre></div>
+  </div>
+  <div class="note"><strong>Billing integrity.</strong> <code>PlanGrant</code> is deliberately a separate table from <code>Subscription</code>. It records plans an admin assigns manually — free, or against a cash amount which may be zero — together with the amount actually received. Because plan prices change over time, the amount is stored on the grant rather than read back from <code>Plan</code>, and grants are excluded from the revenue dashboards so those always show the real number of subscriptions and the real amount collected (<a href="#admin">§19</a>).</div>
+</section>
+
+<section id="flows">
+  <p class="eyebrow">05 — Key flows</p>
+  <h2>Key flows</h2>
+  <p>The main sequences the system has to support, plus the lifecycle of an application.</p>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · onboarding, conditions &amp; subscription</span><span class="k">professional</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P as Professional
+  participant FE as Web App
+  participant API as Django API
+  participant DB as PostgreSQL
+  participant N as Email / SMS
+  participant S as Stripe
+  P->>FE: Sign up (email, password, reCAPTCHA)
+  FE->>API: POST /register + captcha token
+  API->>DB: Create user, set preferred locale
+  API->>N: Send email + SMS codes
+  N-->>P: Verification codes
+  P->>FE: Confirm email and mobile
+  FE->>API: Verify codes
+  API->>DB: Mark verified
+  FE-->>P: Open profile stepper (0 percent)
+  P->>FE: Fill steps, tick conditions to sign
+  FE->>API: Save step, record acceptances
+  API->>DB: Update completeness percentage
+  P->>FE: Pick plan
+  FE->>API: Create subscription
+  API->>S: Open checkout
+  S-->>P: Payment page
+  P->>S: Pay
+  S-->>API: Webhook paid
+  API->>DB: Activate subscription
+  API-->>P: Access granted, search unlocked
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · organisation verification</span><span class="k">organiser + admin</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor O as Organiser
+  participant API as Django API
+  participant N as Email
+  actor A as Admin / Support
+  O->>API: Complete profile steps
+  API-->>O: Final step is verification
+  alt Business email domain
+    O->>API: Submit business email
+    API->>N: Send verification message
+    N-->>O: Verification link
+    O->>API: Confirm link
+    API-->>O: Organisation verified (domain)
+  else No business email
+    O->>API: Request manual validation (catalogue item, 0 EUR)
+    API-->>A: Validation request queued
+    A->>API: Review and approve or reject
+    API-->>O: Organisation verified (manual)
+  end
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · apply, lead choice &amp; salary negotiation</span><span class="k">organiser ↔ professional</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor O as Organiser
+  participant API as Django API
+  participant DB as PostgreSQL
+  actor P as Professional
+  O->>API: Create event, roles and headcount, lead required on medecin
+  O->>API: Set coverage and materials provided
+  API->>DB: Save event (public or to support)
+  P->>API: Search upcoming events, apply
+  Note over P,API: A medecin chooses whether he applies as lead
+  P->>API: Optionally propose another salary
+  API->>DB: Create application (pending) plus proposal
+  API-->>O: Notify new application
+  alt Organiser accepts the proposal
+    O->>API: Accept proposed salary
+  else Organiser refuses
+    O->>API: Keep the initial salary
+  else Organiser counters
+    O->>API: Propose an amount in between
+    P->>API: Accept or decline the counter
+  end
+  O->>API: Choose applicants, accept
+  API->>DB: Update status accepted
+  API-->>P: Notify accepted
+  O->>API: Edit or replace contract lines
+  API->>DB: Save final contract
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · team invitation &amp; leadership transfer</span><span class="k">professionals</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P1 as Professional (lead, medecin)
+  participant API as Django API
+  participant DB as PostgreSQL
+  actor P2 as Professional (peer)
+  P1->>API: Create team
+  API->>DB: Save team, lead = P1
+  P1->>API: Invite peer, set can apply to events
+  API-->>P2: Team invitation
+  P2->>API: Accept, choose auto accept applications
+  API->>DB: Add membership with permissions
+  Note over P1,P2: Leadership transfer, only the current lead may start it
+  P1->>API: Nominate another medecin as lead
+  API-->>P2: Leadership request
+  P2->>API: Accept leadership
+  API->>DB: Set new lead, remove leadership from P1
+  API-->>P1: You are no longer the lead
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · credential verification</span><span class="k">professional + admin</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor P as Professional
+  participant API as Django API
+  participant DB as PostgreSQL
+  participant S as Stripe
+  actor A as Admin / Support
+  P->>API: Upload documents
+  API->>DB: Store documents (pending)
+  P->>API: Pay for verification badge
+  API->>S: One-time payment
+  S-->>API: Webhook paid
+  A->>API: Review documents
+  A->>API: Approve or reject
+  API->>DB: Grant verification badge
+  API-->>P: Notify verified
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">Sequence · catalogue service &amp; quotation (devis)</span><span class="k">organiser / professional + admin</span></div>
+    <div class="figure-b"><pre class="mermaid">
+sequenceDiagram
+  actor U as Organiser or Professional
+  participant API as Django API
+  actor A as Admin / Support
+  U->>API: Request a catalogue service
+  Note over U,API: Private search, team composition, VIP, accompaniment, org validation
+  API-->>A: New service request
+  A->>API: Prepare quotation (devis)
+  API-->>U: Send quotation
+  U->>API: Accept quotation
+  A->>API: Deliver service, invoice
+  U->>API: Pay
+  API-->>U: Service delivered
+</pre></div>
+  </div>
+
+  <div class="figure">
+    <div class="figure-h"><span class="t">State · application lifecycle</span><span class="k">status transitions</span></div>
+    <div class="figure-b"><pre class="mermaid">
+stateDiagram-v2
+  [*] --> Pending
+  Pending --> Negotiating : salary counter-proposal
+  Negotiating --> Pending : amount agreed
+  Negotiating --> Declined : no agreement
+  Pending --> Accepted : organiser accepts
+  Pending --> Declined : organiser declines
+  Accepted --> Confirmed : contract signed
+  Confirmed --> Completed : event done
+  Accepted --> Cancelled : either party cancels
+  Completed --> [*]
+  Declined --> [*]
+  Cancelled --> [*]
+</pre></div>
+  </div>
+</section>
+
+<section id="pages">
+  <p class="eyebrow">06 — Public pages</p>
+  <h2>Public pages (no sign-in)</h2>
+  <h3>Home page</h3>
+  <ul>
+    <li>Intro video, logo, clean and minimal interface, value proposition.</li>
+    <li>Clear calls to action: sign up as a Professional or as an Organisation.</li>
+  </ul>
+  <h3>Other public pages</h3>
+  <ul>
+    <li>Licensing page.</li>
+    <li>About Us page.</li>
+    <li>Pricing / Plans, Contact, and legal pages (GDPR privacy policy, terms of service).</li>
+  </ul>
+  <h3>Coverage notice</h3>
+  <ul>
+    <li>The site states plainly that the platform currently covers <strong>certified EU countries and the United States only</strong>. Placement: the Licensing page and the footer, with the same wording reused in the signup country selector.</li>
+  </ul>
+</section>
+
+<section id="pro-profile">
+  <p class="eyebrow">07 — Professional profile</p>
+  <h2>Professional profile</h2>
+  <h3>Identity &amp; classification</h3>
+  <ul>
+    <li><strong>Profile picture.</strong></li>
+    <li><strong>Professional type (layer 1):</strong> Médecin, Infirmier, Officiel, Cutman, Ambulancier.</li>
+    <li><strong>Subcategory (layer 2):</strong> selected from the subcategories attached to the chosen type; the list is maintained in the admin panel.</li>
+    <li><strong>Common core fields</strong> shared by every professional, plus <strong>fields specific to the selected type</strong>, rendered only for that type.</li>
+    <li><strong>Medical specialty:</strong> one or several.</li>
+    <li><strong>Diploma:</strong> year, place, university, country.</li>
+  </ul>
+
+  <h3>Complementary trainings (treated like diplomas)</h3>
+  <ul>
+    <li>Systematic (predefined) options:
+      <ul><li>Traumatologie du sport</li><li>Gestion d’urgence terrain</li><li>ATLS</li><li>PHTLS</li></ul>
+    </li>
+    <li>Free-text field for other trainings.</li>
+    <li>Document upload (included in the verification).</li>
+  </ul>
+
+  <h3>Registration with the medical board (tableau de l’ordre)</h3>
+  <ul><li>Département / region</li><li>Date</li><li>Document</li><li>Country(ies) where the licence is valid</li></ul>
+
+  <h3>Licences abroad</h3>
+  <ul>
+    <li>Licences are held <strong>per country</strong>. Holding none in a given country does not hide that country's events.</li>
+    <li>From an event in a country he is not licensed in, the professional can apply <strong>and tick “request accompaniment”</strong>, which raises a quotation handled by the admin team (<a href="#payable">§13</a>).</li>
+  </ul>
+
+  <h3>Experience &amp; other fields</h3>
+  <ul>
+    <li>Event volume / experience captured as ranges (0–5, 5–10, …) — surfaced in search results through the detail hint (<a href="#search">§11</a>).</li>
+    <li>Languages.</li>
+    <li>Certificates → document uploads.</li>
+    <li>Availability: calendar or date ranges so organisers can filter by who is free.</li>
+    <li><strong>Preferred language</strong>, editable at any time (<a href="#i18n">§16</a>).</li>
+  </ul>
+
+  <h3>Conditions to sign</h3>
+  <ul>
+    <li>The conditions configured for that professional type must all be ticked; <strong>submit stays disabled until they are</strong>.</li>
+    <li>One of these conditions is the undertaking not to share personal contact details, which the messaging rules in <a href="#comms">§14</a> enforce.</li>
+  </ul>
+
+  <h3>Profile completion</h3>
+  <ul>
+    <li>The <strong>Complete profile</strong> action opens a <strong>stepper</strong>: completed steps are marked green and a <strong>completeness percentage</strong> is shown throughout.</li>
+    <li>The fields in the stepper are <strong>the same fields as the profile</strong> — one source of truth. The user can fill them from the stepper or directly from the profile, in either order.</li>
+    <li>Access gating applies until the profile is complete (<a href="#search">§11</a>).</li>
+  </ul>
+
+  <h3>Professional agenda</h3>
+  <ul>
+    <li>The professional's agenda is reachable from the <strong>top right</strong> of the interface, or from a dedicated menu entry — placement to be settled in design.</li>
+    <li>It shows confirmed engagements, upcoming events applied to, and declared availability.</li>
+  </ul>
+</section>
+
+<section id="org-profile">
+  <p class="eyebrow">08 — Organisation profile &amp; verification</p>
+  <h2>Organisation profile &amp; verification</h2>
+  <ul>
+    <li>Organisation details: name, type, country, <strong>logo / profile picture</strong>.</li>
+    <li>Requirements: specialties / roles typically needed, event types, typical locations.</li>
+    <li>Contact and billing information.</li>
+    <li><strong>Conditions to sign</strong> for the organisation account type; submit disabled until all are ticked.</li>
+    <li><strong>Preferred language</strong>, editable at any time.</li>
+  </ul>
+
+  <h3>Profile completion</h3>
+  <ul>
+    <li>Same mechanism as the professional: a <strong>stepper</strong> with green completed steps and a <strong>completeness percentage</strong>, reading and writing the same fields as the profile itself.</li>
+    <li>Until the profile is complete, the organisation can open the search pages but sees no results (<a href="#search">§11</a>).</li>
+  </ul>
+
+  <h3>Verification — final step of completion</h3>
+  <p>Verification is the <strong>last stage</strong> of completing an organisation profile, and can be satisfied in one of two ways.</p>
+  <ul>
+    <li><strong>1 · Domain verification.</strong> The organisation supplies a business email on its own domain. A message is sent to that address; once the organisation confirms it, the account is considered verified — no human review needed.</li>
+    <li><strong>2 · Requested validation.</strong> Where there is no business email, the organisation requests a manual validation reviewed by the admin team. This service is <strong>free for now</strong> but is carried in the service catalogue <strong>with an amount of €0</strong> so it can be priced later without a code change (<a href="#payable">§13</a>).</li>
+  </ul>
+
+  <h3>VIP status</h3>
+  <ul><li>An organisation can be flagged VIP by the admin team, through payment, or on request — see <a href="#vip">§17</a>.</li></ul>
+
+  <div class="note">The organisation field list is indicative and should be expanded — the full list, formats and which fields are mandatory still need to be defined, since they drive the completeness percentage.</div>
+</section>
+
+<section id="events">
+  <p class="eyebrow">09 — Events, coverage &amp; contracts</p>
+  <h2>Events, coverage &amp; contracts</h2>
+
+  <h3>Event creation (by organiser)</h3>
+  <ul>
+    <li>Details: title, date(s), location, budget or range.</li>
+    <li><strong>Sport / discipline</strong> — football, basketball, MMA and so on. Held as a reference entity in the admin panel, shown on the event and usable as a search filter (<a href="#search">§11</a>).</li>
+    <li><strong>Roles and headcount, role by role</strong> — for example 2 doctors, 3 nurses, 1 ambulance crew — with a <strong>total number of professionals</strong> derived from the breakdown and shown on the event.</li>
+    <li><strong>Lead requirement:</strong> on the médecin role, the organiser indicates whether that role is required as a lead.</li>
+    <li><strong>Imagery:</strong> a <strong>banner image</strong> and a <strong>circular profile image</strong>. If no banner is supplied, the banner section is not rendered at all.</li>
+  </ul>
+
+  <h3>Coverage offered by the organiser</h3>
+  <p>The organiser specifies what the engagement covers, so professionals can judge an offer at a glance:</p>
+  <ul>
+    <li>Accommodation (logement)</li>
+    <li>Food (nourriture)</li>
+    <li>Transport</li>
+    <li>Remuneration (rémunération) — the proposed amount</li>
+    <li>Further coverage items can be added as reference data</li>
+  </ul>
+
+  <h3>Materials provided (matériels mis à disposition)</h3>
+  <ul>
+    <li>The event lists the <strong>materials the organiser makes available</strong> on site.</li>
+    <li>Materials are a <strong>reference entity</strong> maintained in the admin panel (Entities → Materials), so the list stays consistent and filterable.</li>
+  </ul>
+
+  <h3>Salary negotiation</h3>
+  <div class="rule"><strong>Rule.</strong> A professional on a <strong>Gold</strong> subscription may propose a salary different from the one advertised. The organiser can then <strong>refuse and keep the initial salary</strong>, <strong>accept the professional's amount</strong>, or <strong>counter with an amount in between</strong> the two.</div>
+  <ul>
+    <li>Example: the event advertises 300; a Gold professional applies asking 350; the organiser accepts 350, holds at 300, or counters at, say, 325.</li>
+    <li>Professionals below Gold apply at the advertised amount; the counter-offer control is replaced by an upgrade prompt.</li>
+    <li>Every proposal is stored with its author and outcome, giving a full negotiation history on the application.</li>
+    <li>Negotiation is reflected in the application lifecycle (<a href="#flows">§5</a>).</li>
+  </ul>
+
+  <h3>Contract</h3>
+  <ul>
+    <li>A contract is auto-generated by the system and attached to the event.</li>
+    <li>The organiser can edit or replace specific lines, or attach their own contract instead.</li>
+    <li>The agreed remuneration flows from the negotiation into the contract.</li>
+  </ul>
+
+  <h3>Visibility</h3>
+  <ul>
+    <li>Public — listed and searchable by professionals.</li>
+    <li>Direct to support — sent privately to support for handling.</li>
+    <li>VIP and promoted events are surfaced first in results (<a href="#vip">§17</a>).</li>
+  </ul>
+
+  <h3>Application / invitation</h3>
+  <ul>
+    <li>Professionals apply to public events individually or as a team; a médecin states whether he applies as lead.</li>
+    <li><strong>The organiser chooses among the applicants</strong> — applying does not confer a place.</li>
+    <li>Where a professional cannot apply — role already filled, not eligible, subscription tier too low on a VIP event — the event is still shown, marked <strong>“not available”</strong> with the reason, rather than hidden.</li>
+    <li>Organisers invite professionals and can see which team a professional belongs to and its members (<a href="#teams">§10</a>).</li>
+  </ul>
+</section>
+
+<section id="teams">
+  <p class="eyebrow">10 — Teams</p>
+  <h2>Teams</h2>
+  <p>Teams are a professional feature — they are not owned by organisations. Professionals group together, invite each other and can apply to events as a single team. A team has a profile picture of its own.</p>
+
+  <h3>Lead</h3>
+  <div class="rule"><strong>Rule.</strong> A lead is <strong>required</strong> for every team, and the lead must be a <strong>médecin</strong>. No other professional type can lead a team.</div>
+  <ul>
+    <li><strong>Transfer of leadership:</strong> only the current lead can initiate it. He nominates another médecin in the team, and that nominee <strong>must accept</strong>. On acceptance the previous lead loses leadership — there is never more than one lead.</li>
+    <li>A team cannot be left without a lead: if the only médecin leaves, the team is flagged and cannot apply until a lead is in place.</li>
+  </ul>
+
+  <h3>Membership &amp; permissions</h3>
+  <ul>
+    <li>Create a team and become its owner; invite peers to join.</li>
+    <li>When inviting a member, the inviter sets the permission <strong>“Can apply to events”</strong> — whether that member may submit applications on behalf of the team.</li>
+    <li>When a member <strong>accepts</strong> an invitation, he chooses whether he will <strong>accept applications by default</strong> — that is, whether team applications involving him need his explicit confirmation each time or are taken as accepted.</li>
+    <li>A professional can belong to several teams at once (multi-team membership).</li>
+    <li>Apply to public events as a team, in addition to applying individually.</li>
+  </ul>
+
+  <h3>Organisations</h3>
+  <ul>
+    <li>Can see which team a professional belongs to and view the team's members and its lead.</li>
+    <li>Can invite a professional and, through them, reach the team — but do not create or manage teams.</li>
+  </ul>
+</section>
+
+<section id="search">
+  <p class="eyebrow">11 — Search, matching &amp; gating</p>
+  <h2>Search, matching &amp; access gating</h2>
+
+  <h3>Access gating on profile completeness</h3>
+  <div class="rule"><strong>Rule.</strong> A user cannot search until his profile is complete. The pages remain <strong>reachable</strong> — they open normally but return <strong>no results</strong>, with a message inviting the user to complete his profile in order to search. The same applies to viewing other users' profiles: the page opens, the content stays hidden.</div>
+  <ul>
+    <li>This keeps the interface discoverable rather than blocking navigation outright, and gives the completeness percentage (<a href="#pro-profile">§7</a>) a concrete purpose.</li>
+    <li>The empty state links straight into the profile stepper.</li>
+  </ul>
+
+  <h3>Organiser → professionals</h3>
+  <ul>
+    <li>Filters: type and subcategory, specialty, certifications, languages, availability, verification status, location, licence country.</li>
+    <li>Each result shows, on the card itself:
+      <ul>
+        <li>the <strong>flags of the countries where the professional is licensed to practise</strong>, so an organiser can see at a glance whether he may work their event;</li>
+        <li>the <strong>languages he speaks</strong>.</li>
+      </ul>
+    </li>
+    <li>Each result carries a <strong>hint icon</strong>: hovering or tapping it reveals more detail about the professional — experience and event volume, trainings, languages and other profile highlights — without leaving the results list.</li>
+    <li>The team a professional belongs to is visible from the result.</li>
+  </ul>
+
+  <h3>Professional → events</h3>
+  <ul>
+    <li>Filters: role, specialty, location, date, <strong>sport</strong> (football, basketball, MMA, …), coverage offered, materials provided.</li>
+    <li><strong>Remuneration filter</strong> — filtering by pay is reserved for <strong>Silver and Gold</strong> subscribers. Further tier-gated filters are to be confirmed by the client.</li>
+    <li>The sport is shown on every event card alongside the role breakdown.</li>
+    <li><strong>Only upcoming events are shown</strong> — past events never appear in search.</li>
+    <li>Each result shows the <strong>headcount by role</strong> (x doctors, y nurses, …) and the <strong>total number of professionals</strong> sought.</li>
+    <li><strong>Result ordering</strong> reflects the professional's own relationship to each event, in this order:
+      <ul><li>Accepted</li><li>Pending</li><li>Other events</li><li>Declined — always last</li></ul>
+    </li>
+    <li>Each result displays that <strong>status</strong> explicitly, and events he cannot apply to are marked <strong>“not available”</strong> rather than removed.</li>
+    <li>VIP organisations' events and promoted events appear above the rest (<a href="#vip">§17</a>).</li>
+  </ul>
+
+  <h3>Map view</h3>
+  <ul>
+    <li>Events can be browsed on a <strong>map</strong> as well as in a list, with the two views sharing the same filter set — including sport and the tier-gated remuneration filter.</li>
+    <li>VIP and promoted events are distinguished on the map as they are in the list (<a href="#vip">§17</a>).</li>
+  </ul>
+
+  <h3>Matching</h3>
+  <ul>
+    <li>Filter-based to start; AI-assisted matching, ranking and recommendations in a later phase, alongside saved searches and alerts.</li>
+  </ul>
+</section>
+
+<section id="subs">
+  <p class="eyebrow">12 — Subscriptions &amp; payments</p>
+  <h2>Subscriptions, payments &amp; verification badge</h2>
+  <h3>Professional tiers (monthly)</h3>
+  <ul>
+    <li>Basic (free) + Bronze + Silver + Gold.</li>
+    <li>What each tier unlocks is <strong>largely still to be defined</strong> — see <a href="#assumptions">§22</a>. Three entitlements are already fixed:
+      <ul>
+        <li><strong>Gold</strong> — applying to VIP events (<a href="#vip">§17</a>).</li>
+        <li><strong>Gold</strong> — proposing a salary other than the advertised one (<a href="#events">§9</a>).</li>
+        <li><strong>Silver and Gold</strong> — filtering event search by remuneration (<a href="#search">§11</a>).</li>
+      </ul>
+    </li>
+    <li>Entitlements are held as data against each tier, not written into the code, so the plan definitions can be settled and revised without a release.</li>
+  </ul>
+  <h3>Organisation</h3>
+  <ul><li>Free signup; organisations pay for premium services (<a href="#payable">§13</a>) and for VIP or promoted placement (<a href="#vip">§17</a>) rather than a subscription.</li></ul>
+  <h3>Payment methods</h3>
+  <ul><li>Stripe (cards) first; PayPal added in a later phase.</li></ul>
+  <h3>Manually granted plans</h3>
+  <ul>
+    <li>An admin can place a user on a specific plan <strong>for free</strong>, or against an <strong>amount paid in cash</strong>.</li>
+    <li>When granting the plan the admin records the <strong>amount actually received</strong>, which may be <strong>0</strong>.</li>
+    <li>Because plan prices change over time, these grants are stored in a <strong>separate table</strong> with the amount captured at the moment of the grant.</li>
+    <li>Grants <strong>do not feed the dashboards</strong>: the analytics always report the real number of subscriptions taken and the real amount collected through the platform.</li>
+  </ul>
+  <h3>Verification badge</h3>
+  <ul>
+    <li>Separate payment; unlocks the verified badge after document review by support.</li>
+    <li>The badge feature can be <strong>enabled or disabled globally</strong> from the admin panel. Disabling it stops new badges being issued but <strong>does not affect users who already hold one</strong>.</li>
+  </ul>
+  <h3>Later phases</h3>
+  <ul><li>Yearly payment with an annual offer, referral programme (parrainage), voucher codes and user discounts — see <a href="#roadmap">§20</a>.</li></ul>
+</section>
+
+<section id="payable">
+  <p class="eyebrow">13 — Payable services &amp; catalogue</p>
+  <h2>Payable services &amp; catalogue</h2>
+  <p>Services are held in a <strong>catalogue</strong> maintained from the admin panel: each item has a name, an audience, an amount — which may be €0 — and an active flag. Every request raises a <strong>quotation (devis)</strong> that the admin team prepares, sends and tracks through to invoicing.</p>
+
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>Service</th><th>Audience</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Private search</strong></td><td>Organisations</td><td>A bespoke shortlist of professionals prepared by the support team. To be expanded with a full description, deliverables and details shown on the services page.</td></tr>
+      <tr><td><strong>Team composition</strong></td><td>Organisations</td><td>The support team assembles a complete team for the event. To be expanded with a full description and details.</td></tr>
+      <tr><td><strong>VIP request</strong></td><td>Organisations only</td><td>Request VIP status for the organisation, or VIP treatment for a given event (<a href="#vip">§17</a>).</td></tr>
+      <tr><td><strong>Cross-border accompaniment</strong></td><td>Professionals</td><td>Support for a professional applying to an event in a country where he holds no licence. Requested from the event, raised as a quotation, visible to the admin team.</td></tr>
+      <tr><td><strong>Organisation validation</strong></td><td>Organisations</td><td>Manual verification where no business email is available. <strong>€0 for now</strong>, carried in the catalogue so it can be priced later.</td></tr>
+      <tr><td><strong>Promoted event placement</strong></td><td>Organisations</td><td>Paid top placement in search results, purchased event by event (<a href="#vip">§17</a>).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul>
+    <li>All of these are billed as one-off services, not subscriptions.</li>
+    <li>The services page presents each item with an expanded description and its details, and a clear request action.</li>
+  </ul>
+</section>
+
+<section id="comms">
+  <p class="eyebrow">14 — Communication</p>
+  <h2>Communication</h2>
+
+  <h3>Messaging</h3>
+  <ul>
+    <li>In-app messaging between all users: professional ↔ organiser, professional ↔ professional, and with the support team.</li>
+    <li>Direct messaging first; a support chatbot is added in a later phase to handle common questions and triage before a human steps in.</li>
+  </ul>
+
+  <h3>Contact-detail protection</h3>
+  <div class="rule"><strong>Rule.</strong> Sending phone numbers and email addresses through the messaging system is <strong>blocked</strong>. The sender is shown an alert warning that <strong>the account may be blocked</strong>, recalling that he signed a condition not to share his contact details.</div>
+  <ul>
+    <li>Detection covers plain and obfuscated forms of phone numbers and email addresses.</li>
+    <li>Any contact information is <strong>hidden</strong> in message threads, whatever its origin.</li>
+    <li>The warning refers back to the specific condition the user accepted at profile creation (<a href="#roles">§2</a>), which makes it enforceable.</li>
+    <li>Repeat attempts are surfaced to the admin team for moderation.</li>
+  </ul>
+
+  <h3>Contact support</h3>
+  <ul>
+    <li>Both professionals and organisations have a <strong>contact support</strong> action — presented clearly and made easy to reach in the interface, not buried in a menu.</li>
+    <li>The request requires a <strong>motif</strong> (reason), chosen from a list maintained as a reference entity in the admin panel.</li>
+    <li>Requests land in the admin messages queue with their motif for filtering.</li>
+  </ul>
+
+  <h3>Messages from the admin team</h3>
+  <ul><li>The admin team can message any user, either through the in-app messaging system or by email (<a href="#admin">§19</a>).</li></ul>
+
+  <h3>AI features</h3>
+  <ul><li>AI is applied especially in search — assisting matching, ranking and recommendations — and powers the later support chatbot.</li></ul>
+
+  <h3>Notifications</h3>
+  <ul><li>In-app + email notifications for applications, invitations, salary proposals, team and leadership requests, messages, contract / event updates and verification status.</li></ul>
+</section>
+
+<section id="verify">
+  <p class="eyebrow">15 — Verification &amp; security</p>
+  <h2>Account verification &amp; security</h2>
+
+  <h3>Account verification</h3>
+  <ul>
+    <li>Email verification at signup.</li>
+    <li>Mobile (SMS) verification.</li>
+    <li>Organisation verification by business domain or requested validation (<a href="#org-profile">§8</a>).</li>
+    <li>Credential verification is handled separately via document review (<a href="#pro-profile">§7</a>, <a href="#subs">§12</a>).</li>
+  </ul>
+
+  <h3>Verification page</h3>
+  <ul>
+    <li>The verification page is enriched with a proper <strong>title</strong> and a <strong>description</strong> explaining what is being verified, what documents are expected and what happens next.</li>
+  </ul>
+
+  <h3>Verification badge control</h3>
+  <ul>
+    <li>A setting in the admin panel <strong>enables or disables the verification badge</strong> across the platform.</li>
+    <li>Turning it off does <strong>not</strong> affect users who already hold the badge — they keep it.</li>
+  </ul>
+
+  <h3>Bot protection</h3>
+  <ul>
+    <li><strong>reCAPTCHA</strong> (or an equivalent “I am not a robot” challenge) is applied to:
+      <ul><li>Sign in</li><li>Sign up</li><li>Reset password</li><li>Change password</li></ul>
+    </li>
+  </ul>
+</section>
+
+<section id="i18n">
+  <p class="eyebrow">16 — Languages &amp; markets</p>
+  <h2>Languages &amp; markets</h2>
+  <h3>Interface languages</h3>
+  <ul>
+    <li>Full user-interface translation in French and English.</li>
+    <li>Bilingual content / data fields where relevant.</li>
+  </ul>
+  <h3>Preferred language</h3>
+  <ul>
+    <li>A <strong>preferred language</strong> is captured at signup.</li>
+    <li>The default is <strong>English</strong>, except where the user is in a French-speaking country — France, Canada, several African countries — in which case <strong>French</strong> is pre-selected.</li>
+    <li>The user can change it at any time from his profile.</li>
+    <li>The site opens in the user's preferred language on every subsequent visit.</li>
+  </ul>
+  <h3>Markets</h3>
+  <ul>
+    <li>Coverage is limited to <strong>certified EU countries and the United States</strong>, stated publicly (<a href="#pages">§6</a>) and applied consistently to country lists.</li>
+  </ul>
+</section>
+
+<section id="vip">
+  <p class="eyebrow">17 — Visibility &amp; promotion (VIP)</p>
+  <h2>Visibility &amp; promotion</h2>
+  <p>Two mechanisms raise an organisation or an event above ordinary results — a standing VIP status, and paid placement bought per event.</p>
+
+  <h3>VIP organisations</h3>
+  <ul>
+    <li>An organisation can be marked VIP in three ways: <strong>set by the admin team</strong>, <strong>through payment</strong>, or <strong>on request</strong> (a catalogue service, organisations only — <a href="#payable">§13</a>).</li>
+    <li><strong>Their events appear at the top</strong> of professionals' search results.</li>
+    <li><strong>Applying to a VIP organisation's events is restricted to Gold</strong> professionals; other tiers see the event marked “not available” with the reason.</li>
+  </ul>
+
+  <h3>VIP events</h3>
+  <ul>
+    <li>An individual event can also carry VIP status; organisations can request it for a given event.</li>
+    <li>The same Gold-only restriction on applications applies.</li>
+  </ul>
+
+  <h3>Visual treatment</h3>
+  <ul>
+    <li>VIP events are styled <strong>gold on a black background</strong>, in list, map and detail views, so a marquee event — a UFC card, an international championship — reads as premium at a glance.</li>
+    <li>The treatment is derived from the tier palette variables rather than hard-coded, so it stays consistent with the Basic / Bronze / Silver / Gold styling used elsewhere.</li>
+  </ul>
+
+  <h3>Promoted events</h3>
+  <ul>
+    <li>An organisation can <strong>pay for top placement, event by event</strong>, independently of VIP status.</li>
+    <li>Ordering precedence in results: VIP and promoted events first, then the professional's own relationship to each event (accepted → pending → others → declined) as described in <a href="#search">§11</a>.</li>
+  </ul>
+  <div class="note">Pricing for VIP status and for promoted placement is still to be set — see <a href="#assumptions">§22</a>.</div>
+</section>
+
+<section id="mobile">
+  <p class="eyebrow">18 — Mobile strategy</p>
+  <h2>Mobile strategy</h2>
+  <ul>
+    <li>Phase 1: mobile-responsive web.</li>
+    <li>Phase 2: optional PWA (installable + push) — an app-like experience.</li>
+    <li>Phase 3: native iOS + Android app via React Native / Expo.</li>
+  </ul>
+</section>
+
+<section id="admin">
+  <p class="eyebrow">19 — Admin panel</p>
+  <h2>Admin / back-office panel</h2>
+  <p>A private back-office for the internal admin / support team. The early phases ship the essentials needed to run the marketplace; more advanced tooling is added in later phases.</p>
+
+  <h3>Entities — reference data</h3>
+  <p>A dedicated <strong>Entities</strong> menu item, with one sub-menu entry per entity, holds the reference data the rest of the platform reads. Each entity supports add, edit, remove, disable and enable.</p>
+  <ul>
+    <li><strong>Professional sub-categories</strong> — the second layer of the role taxonomy (<a href="#roles">§2</a>).</li>
+    <li><strong>Conditions to sign, per profile type</strong> — the checkboxes a user must tick to create a profile; versioned so acceptances stay traceable.</li>
+    <li><strong>Materials</strong> — the equipment an organiser can declare as provided on an event (<a href="#events">§9</a>).</li>
+    <li><strong>Sports</strong> — the disciplines an event can be attached to and filtered by (<a href="#events">§9</a>, <a href="#search">§11</a>).</li>
+    <li><strong>Support motifs</strong> — the reasons available on a contact-support request (<a href="#comms">§14</a>).</li>
+    <li><strong>Service catalogue</strong> — payable services, their audience and amounts, including €0 items (<a href="#payable">§13</a>).</li>
+    <li>Further entities to be added as they are identified.</li>
+  </ul>
+
+  <h3>Messages</h3>
+  <ul>
+    <li>A dedicated <strong>Messages</strong> menu item with <strong>filters</strong> — by user, type, motif, status and date.</li>
+    <li>The admin can <strong>send a message to any user</strong>, either through the in-app messaging system or by email.</li>
+    <li>Contact-sharing violations flagged by the messaging rules (<a href="#comms">§14</a>) surface here for moderation.</li>
+  </ul>
+
+  <h3>Users, profiles &amp; verification</h3>
+  <ul>
+    <li><strong>User &amp; profile management:</strong> view and search all professionals and organisations; approve, suspend or ban accounts; edit or correct profile data.</li>
+    <li><strong>Credential verification:</strong> review uploaded documents (diplomas, certificates, ordre registration, insurance) and approve or reject them; grant or revoke the verification badge.</li>
+    <li><strong>Verification badge switch:</strong> enable or disable the badge platform-wide, without affecting users who already hold it.</li>
+    <li><strong>Organisation verification:</strong> handle requested validations where no business domain is available.</li>
+  </ul>
+
+  <h3>Subscriptions, plans &amp; payments</h3>
+  <ul>
+    <li>See who is on which tier and their payment status; handle verification-badge payments and basic refunds.</li>
+    <li><strong>Grant a plan manually</strong> — free, or against a cash amount recorded at the time of the grant (possibly €0), stored in a separate table and <strong>excluded from the analytics</strong> so reported revenue stays real (<a href="#subs">§12</a>).</li>
+  </ul>
+
+  <h3>Services, quotations &amp; VIP</h3>
+  <ul>
+    <li>Receive requests for every catalogue service — private search, team composition, VIP, cross-border accompaniment, organisation validation — and build, send and track quotations (sent, accepted, invoiced, paid).</li>
+    <li>Grant or revoke VIP status for organisations and events; manage paid top placement (<a href="#vip">§17</a>).</li>
+  </ul>
+
+  <h3>Events, contracts &amp; moderation</h3>
+  <ul>
+    <li>View all events (public and sent-to-support); handle direct-to-support events; access contracts.</li>
+    <li>Basic moderation of profiles, events and messages.</li>
+  </ul>
+
+  <h3>Content &amp; translations</h3>
+  <ul><li>Manage static pages (Home, About, Licensing) and FR / EN translations.</li></ul>
+
+  <h3>Billing dashboard &amp; analytics <span class="pill">later phase</span></h3>
+  <ul>
+    <li>A <strong>monthly billing dashboard</strong> reporting:
+      <ul>
+        <li><strong>Number of users per type, and the total</strong></li>
+        <li><strong>Revenue per plan, and the total</strong></li>
+      </ul>
+    </li>
+    <li>Figures reflect real subscriptions and real amounts collected; manually granted plans are excluded.</li>
+    <li>Wider analytics: signups, active users per role, verification throughput, events posted, application / match rates.</li>
+  </ul>
+
+  <h3>Advanced — later phases <span class="pill">extra</span></h3>
+  <ul>
+    <li><strong>Review &amp; evaluation management:</strong> enable or disable evaluations globally or per user; keep reviews private; send private feedback to help a party improve.</li>
+    <li><strong>Chatbot &amp; AI management:</strong> configure the support chatbot and tune AI-assisted search.</li>
+    <li><strong>Roles, permissions &amp; audit:</strong> scoped admin / support sub-roles and a full audit log of admin actions (also useful for GDPR).</li>
+    <li><strong>Advanced moderation &amp; troubleshooting:</strong> reports/flags queue, broadcast announcements, and viewing an account “as the user”.</li>
+    <li><strong>Growth tooling:</strong> yearly payment and annual offers, referral programme (parrainage), voucher codes and user discounts.</li>
+  </ul>
+</section>
+
+<section id="roadmap">
+  <p class="eyebrow">20 — Roadmap &amp; pricing</p>
+  <h2>Phasing, priorities &amp; pricing</h2>
+  <p>Features are prioritised by phase: Phase 1 is the must-have MVP, Phase 2 adds trust and collaboration, and Phase 3 covers mobile, AI and growth. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§21</a>).</p>
+  <div class="rule"><strong>Scope absorbed at constant price.</strong> Most of what was agreed on 29 July 2026 refines features that were already in the plan — richer profiles, richer events, richer search, a richer back-office — so it has been folded into the existing line items rather than added alongside them. Genuinely new work appears as new lines. The <strong>core build (Phase 1 + Phase 2) is held at €2,630</strong>, unchanged from the previous revision, with the budget redistributed across the wider scope. The new revenue features — VIP, promoted placement, yearly billing, referrals and vouchers — sit in Phase 3.</div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>1</span></span>
+      <span class="prio prio-1">Priority · Must-have (MVP)</span>
+      <span class="sum">Subtotal €1,545</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Foundation &amp; core marketplace</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Public Home page <span class="d">Intro video, logo, clean minimal UI, calls to action</span></td><td class="r">€85</td></tr>
+        <tr><td>About Us + Licensing static pages <span class="d">Including the certified-countries notice (EU + US only)</span></td><td class="r">€60</td></tr>
+        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation · reCAPTCHA on sign in, sign up, reset and change password · preferred language captured at signup with French pre-selected in French-speaking countries</span></td><td class="r">€130</td></tr>
+        <tr><td>Email verification</td><td class="r">€45</td></tr>
+        <tr><td>Professional profile <span class="d">Two-layer role taxonomy (type + subcategory) · common core fields plus fields specific to each type · conditions to sign with submit disabled until ticked · profile picture · licences per country · document uploads · agenda</span></td><td class="r">€225</td></tr>
+        <tr><td>Organisation profile <span class="d">Fields, logo, conditions to sign, business-domain verification and requested-validation flow</span></td><td class="r">€115</td></tr>
+        <tr><td>Profile completion stepper &amp; access gating <span class="d">Green completed steps, completeness percentage, same fields as the profile, empty-result gating on search and on other profiles</span></td><td class="r">€70</td></tr>
+        <tr><td>Event creation + auto-generated contract (base) <span class="d">Headcount per role with total · lead-required flag on the médecin role · coverage (accommodation, food, transport, remuneration) · materials provided · banner + circular profile image with the banner hidden when empty</span></td><td class="r">€150</td></tr>
+        <tr><td>Search — Organiser → Professionals <span class="d">Filters plus the detail hint icon on each result</span></td><td class="r">€105</td></tr>
+        <tr><td>Search — Professional → Events <span class="d">Filters · upcoming events only · headcount per role · ordering accepted → pending → others → declined with status shown · “not available” state</span></td><td class="r">€100</td></tr>
+        <tr><td>Subscription tiers (Basic / Bronze / Silver / Gold) + Stripe</td><td class="r">€165</td></tr>
+        <tr><td>Internationalization (FR / EN) foundation <span class="d">Site opens in the user's preferred language, changeable from the profile</span></td><td class="r">€80</td></tr>
+        <tr><td>Responsive mobile web layout</td><td class="r">€215</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>2</span></span>
+      <span class="prio prio-2">Priority · Important (trust &amp; teams)</span>
+      <span class="sum">Subtotal €1,085</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Trust, teams, payable services &amp; back-office</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Verification badge workflow + one-time payment <span class="d">Enriched verification page (title, description) · global enable/disable that leaves existing badge holders untouched</span></td><td class="r">€150</td></tr>
+        <tr><td>Mobile (SMS) verification</td><td class="r">€70</td></tr>
+        <tr><td>Contract editing / replacement + public vs. direct-to-support</td><td class="r">€85</td></tr>
+        <tr><td>Salary negotiation <span class="d">Professional counter-proposal; organiser refuses, accepts, or counters with an amount in between · full proposal history</span></td><td class="r">€70</td></tr>
+        <tr><td>Payable services &amp; quotations (devis) <span class="d">Catalogue with amounts including €0 · private search and team composition expanded with details · cross-border accompaniment · organisation validation</span></td><td class="r">€95</td></tr>
+        <tr><td>Notifications <span class="d">In-app + email</span></td><td class="r">€120</td></tr>
+        <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · phone and email blocked with an account-block warning · contact information hidden in threads · contact support with a motif for both account types</span></td><td class="r">€150</td></tr>
+        <tr><td>Teams <span class="d">Create / join · invite with the “can apply to events” permission · auto-accept choice on accepting an invitation · mandatory médecin lead · leadership transfer requiring the nominee's acceptance · apply as a team · multi-team membership · team picture</span></td><td class="r">€180</td></tr>
+        <tr><td>Admin / back-office panel <span class="d">Users, credential and organisation verification, Entities menu (sub-categories, conditions to sign, materials, support motifs, service catalogue), Messages with filters and admin-to-user messaging, quotations, manual plan grants with the amount received</span></td><td class="r">€165</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>3</span></span>
+      <span class="prio prio-3">Priority · Future (mobile, AI &amp; growth)</span>
+      <span class="sum">Subtotal €4,000</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Mobile app, AI &amp; growth</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Native mobile app <span class="d">iOS + Android, React Native / Expo</span></td><td class="r">€1,500</td></tr>
+        <tr><td>Reviews &amp; ratings + admin controls <span class="d">Enable/disable, keep private, private feedback</span></td><td class="r">€300</td></tr>
+        <tr><td>Participation history</td><td class="r">€150</td></tr>
+        <tr><td>Advanced matching / saved searches / alerts</td><td class="r">€250</td></tr>
+        <tr><td>AI features <span class="d">AI-assisted search, ranking &amp; recommendations</span></td><td class="r">€300</td></tr>
+        <tr><td>Support chatbot</td><td class="r">€250</td></tr>
+        <tr><td>Advanced admin features <span class="d">Monthly billing dashboard (users per type + total, revenue per plan + total, excluding manual grants), roles/permissions &amp; audit, chatbot/AI management</span></td><td class="r">€260</td></tr>
+        <tr><td>Push notifications</td><td class="r">€120</td></tr>
+        <tr><td>PayPal integration <span class="d">In addition to Stripe</span></td><td class="r">€100</td></tr>
+        <tr><td>VIP organisations &amp; VIP events <span class="d">Set by admin, by payment or on request · events shown at the top · applying restricted to Gold</span></td><td class="r">€220</td></tr>
+        <tr><td>Promoted events <span class="d">Paid top placement bought event by event</span></td><td class="r">€150</td></tr>
+        <tr><td>Yearly payment + annual offer <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€120</td></tr>
+        <tr><td>Referral programme (parrainage) <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€150</td></tr>
+        <tr><td>Voucher codes &amp; user discounts <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€130</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="totline">
+    <span class="lab">Core build · Phase 1 + Phase 2</span>
+    <span class="val">€2,630</span>
+  </div>
+  <div class="totline">
+    <span class="lab">Full scope · all phases <span class="sub">Phase 3 indicative</span></span>
+    <span class="val">€6,630</span>
+  </div>
+  <div class="note">The four growth features at the foot of Phase 3 — yearly payment, referrals, vouchers and user discounts — were discussed as <strong>phase 3, and possibly phase 2.b</strong>. Whether they move earlier depends on development time and complexity, and would be agreed separately.</div>
+</section>
+
+<section id="hosting">
+  <p class="eyebrow">21 — Hosting &amp; running costs</p>
+  <h2>Estimated hosting &amp; running costs</h2>
+  <p>Ongoing costs to run the platform, <strong>separate from the development quote above</strong>. Estimates only, based on EU providers (chosen for GDPR); they scale with the number of users and message / SMS volume.</p>
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>Item</th><th class="r">Estimated cost</th></tr></thead>
+    <tbody>
+      <tr class="band"><td colspan="2">Monthly / recurring — scales with usage</td></tr>
+      <tr><td>Domain name (.com)</td><td class="r">≈ €1/mo (€10–15/yr)</td></tr>
+      <tr><td>App server / cloud hosting (Hetzner, Scaleway, OVH — EU)</td><td class="r">€5–40/mo</td></tr>
+      <tr><td>Managed PostgreSQL (or on the same server)</td><td class="r">€0–25/mo</td></tr>
+      <tr><td>Object storage — documents, avatars &amp; event banners (EU)</td><td class="r">€1–10/mo</td></tr>
+      <tr><td>Frontend hosting (Vercel / Cloudflare Pages)</td><td class="r">€0–20/mo</td></tr>
+      <tr><td>Transactional email (provider to confirm)</td><td class="r">€0–15/mo</td></tr>
+      <tr><td>SMS gateway — mobile verification (~€0.06 / SMS)</td><td class="r">€5–25/mo</td></tr>
+      <tr><td>reCAPTCHA / bot protection (free tier)</td><td class="r">€0</td></tr>
+      <tr><td>AI / LLM usage — search &amp; chatbot (Phase 3)</td><td class="r">€10–60/mo</td></tr>
+      <tr><td>Error monitoring (Sentry — free tier)</td><td class="r">€0</td></tr>
+      <tr class="sub"><td>Typical monthly total</td><td class="r">≈ €20–220/mo (€250–2,600/yr)</td></tr>
+      <tr class="band"><td colspan="2">One-time / annual &amp; per-transaction</td></tr>
+      <tr><td>Payment processing (Stripe / PayPal)</td><td class="r">~1.5% + €0.25 / EU card txn</td></tr>
+      <tr><td>Apple Developer Program (iOS app — Phase 3)</td><td class="r">≈ €90/yr</td></tr>
+      <tr><td>Google Play Console (Android app — Phase 3)</td><td class="r">≈ €25 one-time</td></tr>
+      <tr><td>SSL certificates (Let’s Encrypt)</td><td class="r">€0</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">All figures are approximate — confirm against current provider pricing. Payment processing is charged per transaction, not as a fixed monthly fee. AI usage and app-store fees apply only once those features ship in Phase 3. US card processing rates differ from EU rates and should be confirmed alongside the market coverage.</div>
+</section>
+
+<section id="assumptions">
+  <p class="eyebrow">22 — Assumptions &amp; questions</p>
+  <h2>Assumptions, exclusions &amp; open questions</h2>
+  <h3>Assumptions</h3>
+  <ul>
+    <li>Prices are indicative development allocations for an initial build; final quotes depend on confirmed scope, and each phase is delivered and invoiced in sequence.</li>
+    <li>All prices are development only and exclude hosting, domain and every third-party subscription / usage fee (estimated in <a href="#hosting">§21</a>): payment transaction fees, SMS gateway, object storage, email service, AI / LLM usage, maps / other APIs and app-store fees.</li>
+    <li>The Phase 1 + Phase 2 total is held at €2,630 by redistributing the existing budget across the wider scope agreed on 29 July 2026, rather than by removing features.</li>
+  </ul>
+  <h3>Exclusions</h3>
+  <ul><li>Native mobile app, reviews, participation history, advanced matching, AI features, support chatbot, VIP and promoted placement, and the growth tooling (yearly billing, referrals, vouchers, discounts) — planned for Phase 3.</li></ul>
+  <h3>Open questions carried from the meeting of 29/07/2026</h3>
+  <ul>
+    <li><strong>Define the plans.</strong> Confirm the four tiers (Basic free + Bronze / Silver / Gold) and define exactly what each one unlocks. Three entitlements are fixed — Gold applies to VIP events, Gold counter-offers on salary, Silver and Gold filter by remuneration — everything else is open, and it is the single largest blocker on development.</li>
+    <li><strong>Further tier-gated filters.</strong> Beyond remuneration, which additional search filters should be reserved for Silver and Gold — the client indicated he would review this in detail.</li>
+    <li><strong>Sport taxonomy.</strong> The initial list of sports, whether it is flat or grouped (combat sports → MMA, boxing), and whether an event may carry more than one.</li>
+    <li><strong>Subcategory common logic.</strong> How the second taxonomy layer behaves across professional types — whether subcategories are shared or strictly per type, and which profile fields they drive.</li>
+    <li><strong>SMS and email providers.</strong> To be selected and the details sent to Soufiane.</li>
+  </ul>
+  <h3>Other open questions to confirm</h3>
+  <ul>
+    <li><strong>VIP &amp; promoted events:</strong> the price of VIP status, the price of top placement per event, and how long each lasts.</li>
+    <li><strong>Cross-border accompaniment:</strong> what the service actually delivers, its price and the turnaround the platform commits to.</li>
+    <li><strong>Certified countries:</strong> confirm the exact list of certified EU countries alongside the US, and whether coverage restricts event creation as well as display.</li>
+    <li><strong>Profile completeness:</strong> which fields count towards the percentage, and what threshold counts as “complete” for unlocking search.</li>
+    <li><strong>Verification badge:</strong> one-time or recurring payment? Who verifies credentials, and against which authority (ordre des médecins)?</li>
+    <li><strong>Auto-generated contracts:</strong> who supplies the base template, and legal review is needed (medical-staffing liability). How the negotiated salary is reflected in the contract.</li>
+    <li><strong>Teams:</strong> who can remove a member, and what happens to a team application if a member leaves? Can an organiser invite a whole team, or only an individual who then brings the team?</li>
+    <li><strong>Team applications:</strong> how is payment / contracting handled for a team engagement — one contract for the team, or one per member?</li>
+    <li><strong>Contact blocking:</strong> what counts as a violation, and what the consequence actually is — warning, temporary suspension or block.</li>
+    <li><strong>AI features:</strong> which model / provider (EU-hosted for GDPR?), what data may be sent to it, and what is the acceptable running-cost ceiling?</li>
+    <li><strong>Support chatbot:</strong> scope for the first release — FAQ / triage only, or acting on the account? Escalation path to a human.</li>
+    <li><strong>Organisation profile:</strong> finalise the full field list, formats and which fields are mandatory.</li>
+    <li><strong>Reviews &amp; ratings:</strong> mutual (both sides) or one-way? Public or private by default?</li>
+    <li><strong>GDPR:</strong> sensitive medical &amp; credential data — EU / France hosting, consent management, data export / erasure, document encryption and audit logs.</li>
+    <li><strong>Payment currency and VAT</strong> handling across the EU and the US.</li>
+  </ul>
+</section>
+
+<section id="meeting-29-07-2026">
+  <p class="eyebrow">23 — Agreed features log</p>
+  <h2>Agreed features log</h2>
+  <p>Every point the client has raised, kept here as a record of when it was agreed. Each item has been specified in the section shown and assigned to a phase; these tables are an index into the document, not a substitute for it.</p>
+
+  <h3>Batch 1 — meeting of 29/07/2026</h3>
+  <div class="tbl-scroll">
+  <table class="log">
+    <thead><tr><th>#</th><th>Feature agreed</th><th>Specified in</th><th>Phase</th></tr></thead>
+    <tbody>
+
+      <tr class="grp"><td colspan="4">Roles, taxonomy &amp; profile conditions</td></tr>
+      <tr><td class="n">1</td><td>Professional roles organised in two layers — type, then subcategory</td><td class="s"><a href="#roles">§2</a>, <a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">2</td><td>A common core of profile fields plus fields specific to each professional type</td><td class="s"><a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">3</td><td>Only a médecin can be a lead, and a lead is mandatory for every team</td><td class="s"><a href="#roles">§2</a>, <a href="#teams">§10</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">4</td><td>The organiser flags, on the médecin role of an event, whether it is required as a lead</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">5</td><td>A médecin chooses, when applying, whether he applies as lead</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">6</td><td>Conditions to check when creating a profile, defined per account type, with submit disabled until all are ticked</td><td class="s"><a href="#roles">§2</a>, <a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">7</td><td>Admin section to add, edit, remove, disable and enable those conditions</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">8</td><td>Admin “Entities” menu with a sub-item per entity — professional sub-categories, conditions to sign per profile type, materials, and others later</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">9</td><td>A doctor holds a licence per country but still sees foreign events; he can apply and request accompaniment where he has no local licence</td><td class="s"><a href="#roles">§2</a>, <a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">10</td><td>Accompaniment added to the service catalogue, requested as a quotation and visible to the admin team</td><td class="s"><a href="#payable">§13</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">11</td><td>Organisation verified at the final stage of profile completion, via a business-email domain</td><td class="s"><a href="#org-profile">§8</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">12</td><td>Requested validation where there is no business email — free for now, carried in the catalogue at €0</td><td class="s"><a href="#org-profile">§8</a>, <a href="#payable">§13</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Events</td></tr>
+      <tr><td class="n">13</td><td>The organiser chooses among applicants; events that cannot be applied to are shown as “not available” rather than hidden</td><td class="s"><a href="#events">§9</a>, <a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">14</td><td>Headcount stated per role — x doctors, y nurses — with a total number of professionals</td><td class="s"><a href="#events">§9</a>, <a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">15</td><td>For professionals, events ordered accepted → pending → others → declined last, each showing its status</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">16</td><td>Search always shows upcoming events, never past ones</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">17</td><td>Event coverage specified at creation — accommodation, food, transport, remuneration</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">18</td><td>The professional may propose another salary; the organiser refuses and keeps the initial amount, accepts it, or counters in between</td><td class="s"><a href="#events">§9</a>, <a href="#flows">§5</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">19</td><td>Materials made available on the event, managed as a reference entity</td><td class="s"><a href="#events">§9</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Teams</td></tr>
+      <tr><td class="n">20</td><td>When inviting a member, the inviter sets the “can apply to events” permission</td><td class="s"><a href="#teams">§10</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">21</td><td>Leadership transfer — only the lead can start it, the nominee must accept, and the previous lead then loses leadership</td><td class="s"><a href="#teams">§10</a>, <a href="#flows">§5</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">22</td><td>On accepting an invitation, a member chooses whether he accepts applications by default</td><td class="s"><a href="#teams">§10</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Messaging &amp; support</td></tr>
+      <tr><td class="n">23</td><td>Phone numbers and email addresses blocked in messages, with an alert warning that the account may be blocked</td><td class="s"><a href="#comms">§14</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">24</td><td>Any contact information hidden in message threads</td><td class="s"><a href="#comms">§14</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">25</td><td>Contact support for both professionals and organisations, with a motif maintained as an admin entity, given a clear and easy action in the interface</td><td class="s"><a href="#comms">§14</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">26</td><td>The admin can message a user through the messaging system or by email</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">27</td><td>A Messages page in the admin panel, with filters</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Admin panel &amp; billing</td></tr>
+      <tr><td class="n">28</td><td>Monthly billing dashboard — users per type and total, revenue per plan and total</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">29</td><td>A switch to enable or disable the verification badge, leaving existing badge holders unaffected</td><td class="s"><a href="#verify">§15</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">30</td><td>Set a user on a plan for free or against a cash amount, recording the amount received (possibly 0) in a separate table, excluded from the analytics so the dashboards keep showing real subscriptions and real revenue</td><td class="s"><a href="#subs">§12</a>, <a href="#data">§4</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">31</td><td>Certificate-expiry tracking removed from the specification</td><td class="s"><a href="#admin">§19</a></td><td class="p"><span class="ph phx">—</span></td></tr>
+      <tr><td class="n">32</td><td>Professional agenda placed at the top right, or given its own menu entry</td><td class="s"><a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Profiles, onboarding &amp; interface</td></tr>
+      <tr><td class="n">33</td><td>“Complete profile” opens a stepper with green completed steps and a completeness percentage, writing the same fields as the profile itself</td><td class="s"><a href="#pro-profile">§7</a>, <a href="#org-profile">§8</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">34</td><td>A user cannot search until his profile is complete — the page opens with no results and a prompt to complete it</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">35</td><td>The same rule for viewing other profiles — pages reachable, results hidden</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">36</td><td>reCAPTCHA on sign in, sign up, reset password and change password</td><td class="s"><a href="#verify">§15</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">37</td><td>Profile image for the organisation, the professional, the team and the event</td><td class="s"><a href="#pro-profile">§7</a>, <a href="#org-profile">§8</a>, <a href="#events">§9</a>, <a href="#teams">§10</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">38</td><td>Two images on an event — a banner and a circular profile image; the banner section disappears when no banner is set</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">39</td><td>A hint icon on each professional in search results, opening more detail about experience and more</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">40</td><td>Preferred language chosen at signup — English by default, French where the user is in a French-speaking country</td><td class="s"><a href="#i18n">§16</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">41</td><td>The site opens in the user's preferred language, which he can change from his profile</td><td class="s"><a href="#i18n">§16</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">42</td><td>The verification page enriched with a title and a description</td><td class="s"><a href="#verify">§15</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">43</td><td>Country coverage — certified EU only plus US only — shown somewhere on the site</td><td class="s"><a href="#pages">§6</a>, <a href="#i18n">§16</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+
+      <tr class="grp"><td colspan="4">VIP &amp; promotion</td></tr>
+      <tr><td class="n">44</td><td>Organisations markable as VIP — from the admin panel, by payment, or on request</td><td class="s"><a href="#vip">§17</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">45</td><td>VIP organisations' events appear at the top of results</td><td class="s"><a href="#vip">§17</a>, <a href="#search">§11</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">46</td><td>Applying to VIP events restricted to Gold</td><td class="s"><a href="#vip">§17</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">47</td><td>Events themselves can carry VIP status, which organisations can request</td><td class="s"><a href="#vip">§17</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">48</td><td>Paid top placement in results, bought event by event</td><td class="s"><a href="#vip">§17</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Services catalogue</td></tr>
+      <tr><td class="n">49</td><td>VIP request added as a service, for organisations only</td><td class="s"><a href="#payable">§13</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">50</td><td>Private search expanded with a full description and details</td><td class="s"><a href="#payable">§13</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">51</td><td>Team composition expanded with a full description and details</td><td class="s"><a href="#payable">§13</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Growth features — phase 3, possibly phase 2.b</td></tr>
+      <tr><td class="n">52</td><td>Yearly payment with an annual offer</td><td class="s"><a href="#roadmap">§20</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">53</td><td>Referral programme (parrainage)</td><td class="s"><a href="#roadmap">§20</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">54</td><td>Voucher codes</td><td class="s"><a href="#roadmap">§20</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">55</td><td>User discounts</td><td class="s"><a href="#roadmap">§20</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Left open at the meeting</td></tr>
+      <tr><td class="n">56</td><td>Define the plans and what each tier unlocks</td><td class="s"><a href="#assumptions">§22</a></td><td class="p"><span class="ph phx">open</span></td></tr>
+      <tr><td class="n">57</td><td>Subcategory common logic</td><td class="s"><a href="#assumptions">§22</a></td><td class="p"><span class="ph phx">open</span></td></tr>
+      <tr><td class="n">58</td><td>Send the SMS and email providers to Soufiane</td><td class="s"><a href="#assumptions">§22</a></td><td class="p"><span class="ph phx">open</span></td></tr>
+
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">58 items agreed on 29 July 2026.</p>
+
+  <h3>Batch 2 — follow-up notes of 30/07/2026</h3>
+  <p>Sent by the client after reviewing the working screens. Items 65 and 67 <strong>refine rules already agreed in batch 1</strong> by attaching them to a subscription tier, so they change what Gold and Silver are worth.</p>
+  <div class="tbl-scroll">
+  <table class="log">
+    <thead><tr><th>#</th><th>Feature agreed</th><th>Specified in</th><th>Phase</th></tr></thead>
+    <tbody>
+
+      <tr class="grp"><td colspan="4">Organiser searching for a professional</td></tr>
+      <tr><td class="n">59</td><td>Show the flags of the countries where the professional is licensed to practise</td><td class="s"><a href="#search">§11</a>, <a href="#pro-profile">§7</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">60</td><td>Show the languages spoken on each professional result</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Organiser searching for events</td></tr>
+      <tr><td class="n">61</td><td>Record the sport on each event, held as a reference entity</td><td class="s"><a href="#events">§9</a>, <a href="#admin">§19</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">62</td><td>Add sport to the event search filters — football, basketball, MMA and so on</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">63</td><td>Style VIP events gold on a black background, for marquee events such as UFC cards and international championships</td><td class="s"><a href="#vip">§17</a></td><td class="p"><span class="ph ph3">P3</span></td></tr>
+      <tr><td class="n">64</td><td>Each event page shows the remuneration, the transport and accommodation coverage, and the materials made available</td><td class="s"><a href="#events">§9</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">65</td><td>The salary counter-offer is reserved for <strong>Gold</strong> — advertised 300, a Gold professional may apply asking 350 <em>(refines item 18)</em></td><td class="s"><a href="#events">§9</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+
+      <tr class="grp"><td colspan="4">Map view &amp; event listing</td></tr>
+      <tr><td class="n">66</td><td>Filter the map view and the listing by sport, sharing one filter set across both views</td><td class="s"><a href="#search">§11</a></td><td class="p"><span class="ph ph1">P1</span></td></tr>
+      <tr><td class="n">67</td><td>Filtering by remuneration reserved for <strong>Silver and Gold</strong> <em>(new tier entitlement)</em></td><td class="s"><a href="#search">§11</a>, <a href="#subs">§12</a></td><td class="p"><span class="ph ph2">P2</span></td></tr>
+      <tr><td class="n">68</td><td>Further tier-gated filters — the client will review and confirm which</td><td class="s"><a href="#assumptions">§22</a></td><td class="p"><span class="ph phx">open</span></td></tr>
+
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">68 items in total — 58 agreed on 29 July 2026, 10 added on 30 July 2026. Phase 1 · must-have MVP · Phase 2 · trust, teams and back-office · Phase 3 · mobile, AI and growth.</p>
+</section>
+
+<footer>Scope agreement · rev. 3 · 30 July 2026 · incorporating the client meeting of 29 July 2026 and the follow-up notes of 30 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
+</div>
+</main>
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad:true,
+    theme:'base',
+    themeVariables:{
+      fontFamily:'Inter, system-ui, sans-serif',
+      primaryColor:'#EAF3F3', primaryTextColor:'#10303B', primaryBorderColor:'#0C6B74',
+      lineColor:'#6B7E86', secondaryColor:'#FDEEE9', tertiaryColor:'#F3F7F7',
+      noteBkgColor:'#FDEEE9', noteBorderColor:'#E4694E', actorBkg:'#EAF3F3', actorBorder:'#0C6B74'
+    }
+  });
+</script>
+<script>
+  const toggle=document.querySelector('.nav-toggle');
+  const sidebar=document.querySelector('.sidebar');
+  toggle.addEventListener('click',()=>sidebar.classList.toggle('open'));
+  const links=[...sidebar.querySelectorAll('a')];
+  links.forEach(a=>a.addEventListener('click',()=>sidebar.classList.remove('open')));
+  const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active')); const a=map.get(e.target.id); if(a)a.classList.add('active'); } });
+  },{rootMargin:'-12% 0px -80% 0px',threshold:0});
+  document.querySelectorAll('main section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
