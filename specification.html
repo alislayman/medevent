@@ -132,6 +132,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 
 .prio-1{background:#0C6B74;color:#fff}
 .prio-2{background:#EEF5F5;color:var(--primary-2);border-color:var(--line-2)}
 .prio-3{background:#FDEEE9;color:#a24b34;border-color:#f0c3b6}
+.prio-4{background:#EDE7F3;color:#5B4380;border-color:#d6c9e6}
 .phase-b{padding:6px 18px 10px}
 .feat{width:100%;border-collapse:collapse;font-size:14px}
 .feat td{padding:9px 2px;border-top:1px solid var(--line);vertical-align:top}
@@ -166,7 +167,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
 <button class="nav-toggle" aria-label="Toggle contents">☰</button>
 <div class="layout">
 <aside class="sidebar">
-  <div class="brand">Medical Event Staffing Platform<small>Scope agreement · rev. 3</small></div>
+  <div class="brand">Medical Event Staffing Platform<small>Scope agreement · rev. 4</small></div>
   <a class="home-link" href="./index.html">&#8592; Project home</a>
   <nav>
   <ul class="toc">
@@ -203,7 +204,7 @@ footer{max-width:var(--maxw);margin:40px auto 0;padding-top:20px;border-top:1px 
     <p class="hero-eyebrow">Scope agreement</p>
     <h1 class="hero-title">Medical Event Staffing Platform</h1>
     <p class="hero-sub">A two-sided marketplace connecting medical professionals — doctors, nurses, officials, cutmen, ambulance staff — with event organisers who need qualified on-site medical coverage.</p>
-    <div class="hero-meta"><span>Rev. 3 · 30 Jul 2026</span><span>Meeting 29 Jul + notes 30 Jul</span><span>Markets · EU + US</span><span><a href="./timeline.html" style="color:#EAF3F3">Project timeline &#8594;</a></span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
+    <div class="hero-meta"><span>Rev. 4 · 8 Aug 2026</span><span>Meeting 29 Jul + notes 30 Jul + 8 Aug</span><span>Markets · EU + US</span><span><a href="./timeline.html" style="color:#EAF3F3">Project timeline &#8594;</a></span><span>Inspiration · MED IN GULF · Malt · Futboljobs</span></div>
   </div>
   <svg class="ecg" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,40 250,40 292,40 306,15 320,66 334,28 348,40 610,40 700,40 714,10 728,70 742,40 902,40 946,40 960,20 974,60 988,40 1200,40"/></svg>
 </header>
@@ -1197,6 +1198,15 @@ stateDiagram-v2
     <li>The user can change it at any time from his profile.</li>
     <li>The site opens in the user's preferred language on every subsequent visit.</li>
   </ul>
+  <h3>Managing the texts <span class="pill">Phase 2</span></h3>
+  <ul>
+    <li>Every text used across the site is editable from the admin panel, <strong>in every language including English</strong>.</li>
+    <li>The client can <strong>add a language himself</strong> and translate into it; anything not yet translated falls back so nothing ever renders blank.</li>
+    <li>Each text shows <strong>where on the site it appears</strong>, so it can be found without hunting.</li>
+    <li>Changes are <strong>live immediately</strong> — no publication step and no deployment.</li>
+    <li>Right-to-left languages such as Arabic mirror the whole interface; that is Phase 4 (<a href="#roadmap">§20</a>).</li>
+  </ul>
+
   <h3>Markets</h3>
   <ul>
     <li>Coverage is limited to <strong>certified EU countries and the United States</strong>, stated publicly (<a href="#pages">§6</a>) and applied consistently to country lists.</li>
@@ -1207,6 +1217,7 @@ stateDiagram-v2
   <p class="eyebrow">17 — Visibility &amp; promotion (VIP)</p>
   <h2>Visibility &amp; promotion</h2>
   <p>Two mechanisms raise an organisation or an event above ordinary results — a standing VIP status, and paid placement bought per event.</p>
+  <div class="rule"><strong>VIP moved to Phase 2 and is already built</strong> (8 Aug 2026): the status on organisations and events, the Gold-only restriction on applying, the VIP-first ordering and the gold-on-black treatment are all delivered, at no additional cost. <strong>Promoted events remain in Phase 3.</strong></div>
 
   <h3>VIP organisations</h3>
   <ul>
@@ -1241,7 +1252,7 @@ stateDiagram-v2
   <ul>
     <li>Phase 1: mobile-responsive web.</li>
     <li>Phase 2: optional PWA (installable + push) — an app-like experience.</li>
-    <li>Phase 3: native iOS + Android app via React Native / Expo.</li>
+    <li>Phase 4: native iOS + Android app via React Native / Expo. <em>Moved from Phase 3 on 8 August 2026.</em></li>
   </ul>
 </section>
 
@@ -1298,7 +1309,7 @@ stateDiagram-v2
   <h3>Content &amp; translations</h3>
   <ul><li>Manage static pages (Home, About, Licensing) and FR / EN translations.</li></ul>
 
-  <h3>Billing dashboard &amp; analytics <span class="pill">later phase</span></h3>
+  <h3>Billing dashboard &amp; analytics <span class="pill">Phase 2 · delivered</span></h3>
   <ul>
     <li>A <strong>monthly billing dashboard</strong> reporting:
       <ul>
@@ -1314,7 +1325,7 @@ stateDiagram-v2
   <ul>
     <li><strong>Review &amp; evaluation management:</strong> enable or disable evaluations globally or per user; keep reviews private; send private feedback to help a party improve.</li>
     <li><strong>Chatbot &amp; AI management:</strong> configure the support chatbot and tune AI-assisted search.</li>
-    <li><strong>Roles, permissions &amp; audit:</strong> scoped admin / support sub-roles and a full audit log of admin actions (also useful for GDPR).</li>
+    <li><strong>Roles &amp; permissions</strong> <span class="pill">Phase 2</span> — scoped admin and support sub-roles. Today a single role covers both, so anyone with support access holds full admin rights. The audit log itself is already built and append-only at both application and database level; the <em>audit tooling</em> beyond it is not planned.</li>
     <li><strong>Advanced moderation &amp; troubleshooting:</strong> reports/flags queue, broadcast announcements, and viewing an account “as the user”.</li>
     <li><strong>Growth tooling:</strong> yearly payment and annual offers, referral programme (parrainage), voucher codes and user discounts.</li>
   </ul>
@@ -1323,8 +1334,8 @@ stateDiagram-v2
 <section id="roadmap">
   <p class="eyebrow">20 — Roadmap &amp; pricing</p>
   <h2>Phasing, priorities &amp; pricing</h2>
-  <p>Features are prioritised by phase: Phase 1 is the must-have MVP, Phase 2 adds trust and collaboration, and Phase 3 covers mobile, AI and growth. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§21</a>).</p>
-  <div class="rule"><strong>Scope absorbed at constant price.</strong> Most of what was agreed on 29 July 2026 refines features that were already in the plan — richer profiles, richer events, richer search, a richer back-office — so it has been folded into the existing line items rather than added alongside them. Genuinely new work appears as new lines. The <strong>core build (Phase 1 + Phase 2) is held at €2,630</strong>, unchanged from the previous revision, with the budget redistributed across the wider scope. The new revenue features — VIP, promoted placement, yearly billing, referrals and vouchers — sit in Phase 3.</div>
+  <p>Features are prioritised by phase: Phase 1 is the must-have MVP, Phase 2 adds trust, collaboration and the back-office, Phase 3 covers growth and payments, and Phase 4 the mobile application. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§21</a>).</p>
+  <div class="rule"><strong>What changed in this revision.</strong> Four items moved into Phase 2. Two of them — <strong>VIP organisations and events</strong>, and the <strong>admin analytics dashboards</strong> — are <strong>already built and carry no cost</strong>. Two are new: <strong>localization</strong> at €500 and <strong>admin permissions and roles</strong> at €100, taking the core build from €2,630 to <strong>€3,230</strong>. The <strong>native mobile app moves to Phase 4</strong>, together with right-to-left language support, so Phase 3 is now growth and payments rather than mobile. <strong>Hold &amp; release</strong> joins Phase 3 at €1,000, and marketing campaigns are listed there pending a scope to price.</div>
 
   <div class="phase">
     <div class="phase-top">
@@ -1337,14 +1348,14 @@ stateDiagram-v2
       <table class="feat">
         <tr><td>Public Home page <span class="d">Intro video, logo, clean minimal UI, calls to action</span></td><td class="r">€85</td></tr>
         <tr><td>About Us + Licensing static pages <span class="d">Including the certified-countries notice (EU + US only)</span></td><td class="r">€60</td></tr>
-        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation · reCAPTCHA on sign in, sign up, reset and change password · preferred language captured at signup with French pre-selected in French-speaking countries</span></td><td class="r">€130</td></tr>
+        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation · reCAPTCHA on sign in, sign up, reset and change password · preferred language captured at signup</span></td><td class="r">€130</td></tr>
         <tr><td>Email verification</td><td class="r">€45</td></tr>
-        <tr><td>Professional profile <span class="d">Two-layer role taxonomy (type + subcategory) · common core fields plus fields specific to each type · conditions to sign with submit disabled until ticked · profile picture · licences per country · document uploads · agenda</span></td><td class="r">€225</td></tr>
+        <tr><td>Professional profile <span class="d">Two-layer role taxonomy · common core plus per-type fields · conditions to sign · profile picture · bio · experience &amp; skills · preferred sports · licences per country · document uploads · agenda</span></td><td class="r">€225</td></tr>
         <tr><td>Organisation profile <span class="d">Fields, logo, conditions to sign, business-domain verification and requested-validation flow</span></td><td class="r">€115</td></tr>
-        <tr><td>Profile completion stepper &amp; access gating <span class="d">Green completed steps, completeness percentage, same fields as the profile, empty-result gating on search and on other profiles</span></td><td class="r">€70</td></tr>
-        <tr><td>Event creation + auto-generated contract (base) <span class="d">Headcount per role with total · lead-required flag on the médecin role · coverage (accommodation, food, transport, remuneration) · materials provided · banner + circular profile image with the banner hidden when empty</span></td><td class="r">€150</td></tr>
-        <tr><td>Search — Organiser → Professionals <span class="d">Filters plus the detail hint icon on each result</span></td><td class="r">€105</td></tr>
-        <tr><td>Search — Professional → Events <span class="d">Filters · upcoming events only · headcount per role · ordering accepted → pending → others → declined with status shown · “not available” state</span></td><td class="r">€100</td></tr>
+        <tr><td>Profile completion stepper &amp; access gating <span class="d">Green completed steps, completeness percentage, empty-result gating on search and on other profiles</span></td><td class="r">€70</td></tr>
+        <tr><td>Event creation + auto-generated contract (base) <span class="d">Headcount per role · lead-required flag on the médecin role · coverage · materials · sport · banner + circular profile image</span></td><td class="r">€150</td></tr>
+        <tr><td>Search — Organiser → Professionals <span class="d">Filters, licence-country flags, languages, detail hint icon</span></td><td class="r">€105</td></tr>
+        <tr><td>Search — Professional → Events <span class="d">Filters · upcoming only · headcount per role · ordering with status · “not available” state · map view</span></td><td class="r">€100</td></tr>
         <tr><td>Subscription tiers (Basic / Bronze / Silver / Gold) + Stripe</td><td class="r">€165</td></tr>
         <tr><td>Internationalization (FR / EN) foundation <span class="d">Site opens in the user's preferred language, changeable from the profile</span></td><td class="r">€80</td></tr>
         <tr><td>Responsive mobile web layout</td><td class="r">€215</td></tr>
@@ -1355,21 +1366,25 @@ stateDiagram-v2
   <div class="phase">
     <div class="phase-top">
       <span class="num">Phase <span>2</span></span>
-      <span class="prio prio-2">Priority · Important (trust &amp; teams)</span>
-      <span class="sum">Subtotal €1,085</span>
+      <span class="prio prio-2">Priority · Important (trust, back-office &amp; control)</span>
+      <span class="sum">Subtotal €1,685</span>
     </div>
-    <h3 style="padding:14px 18px 0;margin:0">Trust, teams, payable services &amp; back-office</h3>
+    <h3 style="padding:14px 18px 0;margin:0">Trust, teams, payable services, back-office &amp; localization</h3>
     <div class="phase-b">
       <table class="feat">
-        <tr><td>Verification badge workflow + one-time payment <span class="d">Enriched verification page (title, description) · global enable/disable that leaves existing badge holders untouched</span></td><td class="r">€150</td></tr>
+        <tr><td>Verification badge workflow + one-time payment <span class="d">Enriched verification page · global enable/disable leaving existing holders untouched</span></td><td class="r">€150</td></tr>
         <tr><td>Mobile (SMS) verification</td><td class="r">€70</td></tr>
         <tr><td>Contract editing / replacement + public vs. direct-to-support</td><td class="r">€85</td></tr>
-        <tr><td>Salary negotiation <span class="d">Professional counter-proposal; organiser refuses, accepts, or counters with an amount in between · full proposal history</span></td><td class="r">€70</td></tr>
-        <tr><td>Payable services &amp; quotations (devis) <span class="d">Catalogue with amounts including €0 · private search and team composition expanded with details · cross-border accompaniment · organisation validation</span></td><td class="r">€95</td></tr>
+        <tr><td>Salary negotiation <span class="d">Gold counter-proposal; organiser refuses, accepts, or counters in between · full proposal history</span></td><td class="r">€70</td></tr>
+        <tr><td>Payable services &amp; quotations (devis) <span class="d">Catalogue with amounts including €0 · private search · team composition · accompaniment · organisation validation · formation request</span></td><td class="r">€95</td></tr>
         <tr><td>Notifications <span class="d">In-app + email</span></td><td class="r">€120</td></tr>
-        <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · phone and email blocked with an account-block warning · contact information hidden in threads · contact support with a motif for both account types</span></td><td class="r">€150</td></tr>
-        <tr><td>Teams <span class="d">Create / join · invite with the “can apply to events” permission · auto-accept choice on accepting an invitation · mandatory médecin lead · leadership transfer requiring the nominee's acceptance · apply as a team · multi-team membership · team picture</span></td><td class="r">€180</td></tr>
-        <tr><td>Admin / back-office panel <span class="d">Users, credential and organisation verification, Entities menu (sub-categories, conditions to sign, materials, support motifs, service catalogue), Messages with filters and admin-to-user messaging, quotations, manual plan grants with the amount received</span></td><td class="r">€165</td></tr>
+        <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · contact details blocked and hidden · contact support with a motif</span></td><td class="r">€150</td></tr>
+        <tr><td>Teams <span class="d">Create / join · permissions on invitation · mandatory médecin lead · leadership transfer · apply as a team · multi-team membership</span></td><td class="r">€180</td></tr>
+        <tr><td>Admin / back-office panel <span class="d">Users, verification, Entities menu, Messages with filters, quotations, manual plan grants</span></td><td class="r">€165</td></tr>
+        <tr><td>Localization &amp; translations <span class="d"><strong>New.</strong> All texts editable from the admin panel in every language, English included · client adds languages himself · changes live immediately with no deployment · right-to-left support excluded, see Phase 4</span></td><td class="r">€500</td></tr>
+        <tr><td>VIP organisations &amp; VIP events <span class="d"><strong>Already delivered.</strong> Set by admin, by payment or on request · events shown first · applying restricted to Gold · gold-on-black treatment</span></td><td class="r">€0</td></tr>
+        <tr><td>Admin analytics &amp; billing dashboards <span class="d"><strong>Already delivered.</strong> Users per type and total, revenue per plan and total, monthly buckets, manual grants excluded</span></td><td class="r">€0</td></tr>
+        <tr><td>Admin panel permissions &amp; roles <span class="d"><strong>New.</strong> Scoped admin and support sub-roles. Today a single role covers both, so support staff hold full admin rights</span></td><td class="r">€100</td></tr>
       </table>
     </div>
   </div>
@@ -1377,39 +1392,53 @@ stateDiagram-v2
   <div class="phase">
     <div class="phase-top">
       <span class="num">Phase <span>3</span></span>
-      <span class="prio prio-3">Priority · Future (mobile, AI &amp; growth)</span>
-      <span class="sum">Subtotal €4,000</span>
+      <span class="prio prio-3">Priority · Growth &amp; payments</span>
+      <span class="sum">Subtotal €3,020 + TBD</span>
     </div>
-    <h3 style="padding:14px 18px 0;margin:0">Mobile app, AI &amp; growth</h3>
+    <h3 style="padding:14px 18px 0;margin:0">Reviews, AI, promotion, payments &amp; marketing</h3>
     <div class="phase-b">
       <table class="feat">
-        <tr><td>Native mobile app <span class="d">iOS + Android, React Native / Expo</span></td><td class="r">€1,500</td></tr>
         <tr><td>Reviews &amp; ratings + admin controls <span class="d">Enable/disable, keep private, private feedback</span></td><td class="r">€300</td></tr>
         <tr><td>Participation history</td><td class="r">€150</td></tr>
         <tr><td>Advanced matching / saved searches / alerts</td><td class="r">€250</td></tr>
         <tr><td>AI features <span class="d">AI-assisted search, ranking &amp; recommendations</span></td><td class="r">€300</td></tr>
         <tr><td>Support chatbot</td><td class="r">€250</td></tr>
-        <tr><td>Advanced admin features <span class="d">Monthly billing dashboard (users per type + total, revenue per plan + total, excluding manual grants), roles/permissions &amp; audit, chatbot/AI management</span></td><td class="r">€260</td></tr>
         <tr><td>Push notifications</td><td class="r">€120</td></tr>
         <tr><td>PayPal integration <span class="d">In addition to Stripe</span></td><td class="r">€100</td></tr>
-        <tr><td>VIP organisations &amp; VIP events <span class="d">Set by admin, by payment or on request · events shown at the top · applying restricted to Gold</span></td><td class="r">€220</td></tr>
         <tr><td>Promoted events <span class="d">Paid top placement bought event by event</span></td><td class="r">€150</td></tr>
-        <tr><td>Yearly payment + annual offer <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€120</td></tr>
-        <tr><td>Referral programme (parrainage) <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€150</td></tr>
-        <tr><td>Voucher codes &amp; user discounts <span class="d">Candidate for phase 2.b depending on development time</span></td><td class="r">€130</td></tr>
+        <tr><td>Yearly payment + annual offer</td><td class="r">€120</td></tr>
+        <tr><td>Referral programme (parrainage)</td><td class="r">€150</td></tr>
+        <tr><td>Voucher codes &amp; user discounts</td><td class="r">€130</td></tr>
+        <tr><td>Hold &amp; release on the engagement fee <span class="d"><strong>New.</strong> The organiser's payment is held when an application is accepted and released to the professional once the event is done. Requires Stripe Connect and identity verification for every professional to be paid</span></td><td class="r">€1,000</td></tr>
+        <tr><td>Marketing campaigns — email &amp; SMS <span class="d"><strong>New.</strong> Define groups of professionals and organisations and send campaigns to them from predefined templates</span></td><td class="r">To be defined</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>4</span></span>
+      <span class="prio prio-4">Priority · Future (mobile &amp; RTL)</span>
+      <span class="sum">Subtotal €1,750</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Mobile application &amp; right-to-left</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Native mobile app <span class="d">iOS + Android, React Native / Expo</span></td><td class="r">€1,500</td></tr>
+        <tr><td>Right-to-left language support <span class="d">Arabic and similar: the whole interface mirrors. Deferred deliberately — with only English and French there is no way to verify it works</span></td><td class="r">€250</td></tr>
       </table>
     </div>
   </div>
 
   <div class="totline">
     <span class="lab">Core build · Phase 1 + Phase 2</span>
-    <span class="val">€2,630</span>
+    <span class="val">€3,230</span>
   </div>
   <div class="totline">
-    <span class="lab">Full scope · all phases <span class="sub">Phase 3 indicative</span></span>
-    <span class="val">€6,630</span>
+    <span class="lab">Full scope · all phases <span class="sub">marketing campaigns still to be priced</span></span>
+    <span class="val">€8,000</span>
   </div>
-  <div class="note">The four growth features at the foot of Phase 3 — yearly payment, referrals, vouchers and user discounts — were discussed as <strong>phase 3, and possibly phase 2.b</strong>. Whether they move earlier depends on development time and complexity, and would be agreed separately.</div>
+  <div class="note">Two Phase 2 lines are priced at €0 because the work is already complete — VIP and the analytics dashboards were built during Phase 2 development and are shown here so the scope is visible rather than invisible. Marketing campaigns (Phase 3) need a defined scope before they can be priced. Right-to-left support sits in Phase 4 by choice: it is real work across the whole interface, and with only English and French in use there is no way to verify it is correct until a right-to-left language is actually planned.</div>
 </section>
 
 <section id="hosting">
@@ -1450,10 +1479,13 @@ stateDiagram-v2
   <ul>
     <li>Prices are indicative development allocations for an initial build; final quotes depend on confirmed scope, and each phase is delivered and invoiced in sequence.</li>
     <li>All prices are development only and exclude hosting, domain and every third-party subscription / usage fee (estimated in <a href="#hosting">§21</a>): payment transaction fees, SMS gateway, object storage, email service, AI / LLM usage, maps / other APIs and app-store fees.</li>
-    <li>The Phase 1 + Phase 2 total is held at €2,630 by redistributing the existing budget across the wider scope agreed on 29 July 2026, rather than by removing features.</li>
+    <li>The Phase 1 + Phase 2 total was held at €2,630 through the scope agreed on 29–30 July 2026. The revision of 8 August 2026 adds localization (€500) and admin permissions (€100), taking the core build to <strong>€3,230</strong>. VIP and the analytics dashboards moved into Phase 2 at no cost because the work was already complete.</li>
   </ul>
   <h3>Exclusions</h3>
-  <ul><li>Native mobile app, reviews, participation history, advanced matching, AI features, support chatbot, VIP and promoted placement, and the growth tooling (yearly billing, referrals, vouchers, discounts) — planned for Phase 3.</li></ul>
+  <ul>
+    <li><strong>Phase 3</strong> — reviews, participation history, advanced matching, AI features, support chatbot, push notifications, PayPal, promoted events, the growth tooling (yearly billing, referrals, vouchers, discounts), hold &amp; release on the engagement fee, and marketing campaigns.</li>
+    <li><strong>Phase 4</strong> — the native mobile application and right-to-left language support.</li>
+  </ul>
   <h3>Open questions carried from the meeting of 29/07/2026</h3>
   <ul>
     <li><strong>Define the plans.</strong> Confirm the four tiers (Basic free + Bronze / Silver / Gold) and define exactly what each one unlocks. Three entitlements are fixed — Gold applies to VIP events, Gold counter-offers on salary, Silver and Gold filter by remuneration — everything else is open, and it is the single largest blocker on development.</li>
@@ -1605,7 +1637,7 @@ stateDiagram-v2
   <p class="cap">68 items in total — 58 agreed on 29 July 2026, 10 added on 30 July 2026. Phase 1 · must-have MVP · Phase 2 · trust, teams and back-office · Phase 3 · mobile, AI and growth.</p>
 </section>
 
-<footer>Scope agreement · rev. 3 · 30 July 2026 · incorporating the client meeting of 29 July 2026 and the follow-up notes of 30 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
+<footer>Scope agreement · rev. 4 · 8 August 2026 · incorporating the client meeting of 29 July 2026, the notes of 30 July 2026, and the roadmap revision of 8 August 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
 </div>
 </main>
 </div>
