@@ -133,6 +133,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 
 .prio-2{background:#EEF5F5;color:var(--primary-2);border-color:var(--line-2)}
 .prio-3{background:#FDEEE9;color:#a24b34;border-color:#f0c3b6}
 .prio-4{background:#EDE7F3;color:#5B4380;border-color:#d6c9e6}
+.prio-5{background:#EAF0F6;color:#3D5A80;border-color:#c8d8e8}
 .phase-b{padding:6px 18px 10px}
 .feat{width:100%;border-collapse:collapse;font-size:14px}
 .feat td{padding:9px 2px;border-top:1px solid var(--line);vertical-align:top}
@@ -358,12 +359,12 @@ flowchart LR
     <li><div class="card"><p class="k">Database</p><h4>PostgreSQL</h4><p>Relational core with JSONB for flexible per-type profile fields and full-text search to power matching and filtering.</p></div></li>
     <li><div class="card"><p class="k">Auth &amp; anti-bot</p><h4>JWT + reCAPTCHA</h4><p>Django auth with JWT for the API; reCAPTCHA on sign in, sign up, password reset and password change.</p></div></li>
     <li><div class="card"><p class="k">Payments</p><h4>Stripe · PayPal</h4><p>Stripe (cards + tiers) first and PayPal later, with webhooks keeping subscription state in sync.</p></div></li>
-    <li><div class="card"><p class="k">File storage</p><h4>EU S3-compatible storage</h4><p>Encrypted object storage in the EU for avatars, event banners and sensitive credential documents, with server-side resizing.</p></div></li>
+    <li><div class="card"><p class="k">Email &amp; SMS</p><h4>Brevo</h4><p><strong>Decided.</strong> One French provider for both channels — account confirmation, password reset and notification email, plus the one-time codes that verify a phone number. Marketing campaigns later use the same account.</p></div></li>
+    <li><div class="card"><p class="k">File storage</p><h4>Scaleway Object Storage (S3)</h4><p>S3-compatible object storage in France for avatars, event banners and credential documents, encrypted, with server-side resizing. Same private network as the application.</p></div></li>
     <li><div class="card"><p class="k">AI</p><h4>AI search &amp; support chatbot</h4><p>AI-assisted matching and ranking in search, plus a support chatbot layered on the same API in a later phase.</p></div></li>
-    <li><div class="card"><p class="k">Hosting</p><h4>EU / France · GDPR</h4><p>EU data residency (Scaleway, OVHcloud or Hetzner) for medical and credential data.</p></div></li>
+    <li><div class="card"><p class="k">Hosting</p><h4>Scaleway · France (fr-par)</h4><p><strong>Decided.</strong> Application containers, managed PostgreSQL and object storage in one private network, with the database reachable only privately. Separate projects isolate test from production.</p></div></li>
     <li><div class="card"><p class="k">Source &amp; CI/CD</p><h4>GitHub + GitHub Actions</h4><p>Automated lint → test → build → deploy; mobile builds via Expo EAS.</p></div></li>
   </ul>
-  <div class="note">SMS and email providers are to be confirmed and their details sent to Soufiane — see <a href="#assumptions">§22</a>.</div>
   <div class="figure">
     <div class="figure-h"><span class="t">System architecture</span><span class="k">clients → API → services · all phases</span></div>
     <div class="figure-b"><pre class="mermaid">
@@ -1204,7 +1205,7 @@ stateDiagram-v2
     <li>The client can <strong>add a language himself</strong> and translate into it; anything not yet translated falls back so nothing ever renders blank.</li>
     <li>Each text shows <strong>where on the site it appears</strong>, so it can be found without hunting.</li>
     <li>Changes are <strong>live immediately</strong> — no publication step and no deployment.</li>
-    <li>Right-to-left languages such as Arabic mirror the whole interface; that is Phase 4 (<a href="#roadmap">§20</a>).</li>
+    <li>Right-to-left languages such as Arabic mirror the whole interface; that is Phase 5 (<a href="#roadmap">§20</a>).</li>
   </ul>
 
   <h3>Markets</h3>
@@ -1217,7 +1218,7 @@ stateDiagram-v2
   <p class="eyebrow">17 — Visibility &amp; promotion (VIP)</p>
   <h2>Visibility &amp; promotion</h2>
   <p>Two mechanisms raise an organisation or an event above ordinary results — a standing VIP status, and paid placement bought per event.</p>
-  <div class="rule"><strong>VIP moved to Phase 2 and is already built</strong> (8 Aug 2026): the status on organisations and events, the Gold-only restriction on applying, the VIP-first ordering and the gold-on-black treatment are all delivered, at no additional cost. <strong>Promoted events remain in Phase 3.</strong></div>
+  <div class="rule"><strong>VIP moved to Phase 2 and is already built</strong> (8 Aug 2026): the status on organisations and events, the Gold-only restriction on applying, the VIP-first ordering and the gold-on-black treatment are all delivered, at no additional cost. <strong>Promoted events remain in Phase 4.</strong></div>
 
   <h3>VIP organisations</h3>
   <ul>
@@ -1252,7 +1253,7 @@ stateDiagram-v2
   <ul>
     <li>Phase 1: mobile-responsive web.</li>
     <li>Phase 2: optional PWA (installable + push) — an app-like experience.</li>
-    <li>Phase 4: native iOS + Android app via React Native / Expo. <em>Moved from Phase 3 on 8 August 2026.</em></li>
+    <li>Phase 5: native iOS + Android app via React Native / Expo. <em>Moved out of Phase 3 on 8 August 2026.</em></li>
   </ul>
 </section>
 
@@ -1334,8 +1335,23 @@ stateDiagram-v2
 <section id="roadmap">
   <p class="eyebrow">20 — Roadmap &amp; pricing</p>
   <h2>Phasing, priorities &amp; pricing</h2>
-  <p>Features are prioritised by phase: Phase 1 is the must-have MVP, Phase 2 adds trust, collaboration and the back-office, Phase 3 covers growth and payments, and Phase 4 the mobile application. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§21</a>).</p>
-  <div class="rule"><strong>What changed in this revision.</strong> Four items moved into Phase 2. Two of them — <strong>VIP organisations and events</strong>, and the <strong>admin analytics dashboards</strong> — are <strong>already built and carry no cost</strong>. Two are new: <strong>localization</strong> at €500 and <strong>admin permissions and roles</strong> at €100, taking the core build from €2,630 to <strong>€3,230</strong>. The <strong>native mobile app moves to Phase 4</strong>, together with right-to-left language support, so Phase 3 is now growth and payments rather than mobile. <strong>Hold &amp; release</strong> joins Phase 3 at €1,000, and marketing campaigns are listed there pending a scope to price.</div>
+  <p>Features are prioritised by phase. Prices are indicative development allocations shown per feature; hosting and running costs are separate (<a href="#hosting">§21</a>).</p>
+
+  <div class="tbl-scroll">
+  <table class="tbl">
+    <thead><tr><th>Phase</th><th>Scope</th><th class="r">Cost</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Phase 1</strong></td><td>Foundation &amp; core marketplace</td><td class="r">€1,545</td></tr>
+      <tr><td><strong>Phase 2</strong></td><td>Trust, teams, payable services, back-office &amp; localization</td><td class="r">€1,685</td></tr>
+      <tr class="sub"><td>Core build</td><td>Phase 1 + Phase 2</td><td class="r">€3,230</td></tr>
+      <tr><td><strong>Phase 3</strong></td><td>Hold &amp; release on the engagement fee</td><td class="r">€1,000</td></tr>
+      <tr><td><strong>Phase 4</strong></td><td>Reviews, AI, promotion, payments &amp; marketing</td><td class="r">€2,020 + TBD</td></tr>
+      <tr><td><strong>Phase 5</strong></td><td>Mobile application &amp; right-to-left</td><td class="r">€1,600</td></tr>
+      <tr class="total"><td>Total</td><td>All phases</td><td class="r">€7,850 + TBD</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">Marketing campaigns (Phase 4) need a defined scope before they can be priced, and are excluded from the total.</p>
 
   <div class="phase">
     <div class="phase-top">
@@ -1381,7 +1397,7 @@ stateDiagram-v2
         <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · contact details blocked and hidden · contact support with a motif</span></td><td class="r">€150</td></tr>
         <tr><td>Teams <span class="d">Create / join · permissions on invitation · mandatory médecin lead · leadership transfer · apply as a team · multi-team membership</span></td><td class="r">€180</td></tr>
         <tr><td>Admin / back-office panel <span class="d">Users, verification, Entities menu, Messages with filters, quotations, manual plan grants</span></td><td class="r">€165</td></tr>
-        <tr><td>Localization &amp; translations <span class="d"><strong>New.</strong> All texts editable from the admin panel in every language, English included · client adds languages himself · changes live immediately with no deployment · right-to-left support excluded, see Phase 4</span></td><td class="r">€500</td></tr>
+        <tr><td>Localization &amp; translations <span class="d"><strong>New.</strong> All texts editable from the admin panel in every language, English included · client adds languages himself · changes live immediately with no deployment · right-to-left support excluded, see Phase 5</span></td><td class="r">€500</td></tr>
         <tr><td>VIP organisations &amp; VIP events <span class="d"><strong>Already delivered.</strong> Set by admin, by payment or on request · events shown first · applying restricted to Gold · gold-on-black treatment</span></td><td class="r">€0</td></tr>
         <tr><td>Admin analytics &amp; billing dashboards <span class="d"><strong>Already delivered.</strong> Users per type and total, revenue per plan and total, monthly buckets, manual grants excluded</span></td><td class="r">€0</td></tr>
         <tr><td>Admin panel permissions &amp; roles <span class="d"><strong>New.</strong> Scoped admin and support sub-roles. Today a single role covers both, so support staff hold full admin rights</span></td><td class="r">€100</td></tr>
@@ -1392,8 +1408,22 @@ stateDiagram-v2
   <div class="phase">
     <div class="phase-top">
       <span class="num">Phase <span>3</span></span>
-      <span class="prio prio-3">Priority · Growth &amp; payments</span>
-      <span class="sum">Subtotal €3,020 + TBD</span>
+      <span class="prio prio-3">Priority · Payments</span>
+      <span class="sum">Subtotal €1,000</span>
+    </div>
+    <h3 style="padding:14px 18px 0;margin:0">Hold &amp; release on the engagement fee</h3>
+    <div class="phase-b">
+      <table class="feat">
+        <tr><td>Hold &amp; release on the engagement fee <span class="d"><strong>New.</strong> The organiser's payment is held when an application is accepted and released to the professional once the event is done. Requires Stripe Connect and identity verification for every professional to be paid</span></td><td class="r">€1,000</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-top">
+      <span class="num">Phase <span>4</span></span>
+      <span class="prio prio-4">Priority · Growth</span>
+      <span class="sum">Subtotal €2,020 + TBD</span>
     </div>
     <h3 style="padding:14px 18px 0;margin:0">Reviews, AI, promotion, payments &amp; marketing</h3>
     <div class="phase-b">
@@ -1409,7 +1439,6 @@ stateDiagram-v2
         <tr><td>Yearly payment + annual offer</td><td class="r">€120</td></tr>
         <tr><td>Referral programme (parrainage)</td><td class="r">€150</td></tr>
         <tr><td>Voucher codes &amp; user discounts</td><td class="r">€130</td></tr>
-        <tr><td>Hold &amp; release on the engagement fee <span class="d"><strong>New.</strong> The organiser's payment is held when an application is accepted and released to the professional once the event is done. Requires Stripe Connect and identity verification for every professional to be paid</span></td><td class="r">€1,000</td></tr>
         <tr><td>Marketing campaigns — email &amp; SMS <span class="d"><strong>New.</strong> Define groups of professionals and organisations and send campaigns to them from predefined templates</span></td><td class="r">To be defined</td></tr>
       </table>
     </div>
@@ -1417,15 +1446,15 @@ stateDiagram-v2
 
   <div class="phase">
     <div class="phase-top">
-      <span class="num">Phase <span>4</span></span>
-      <span class="prio prio-4">Priority · Future (mobile &amp; RTL)</span>
-      <span class="sum">Subtotal €1,750</span>
+      <span class="num">Phase <span>5</span></span>
+      <span class="prio prio-5">Priority · Future (mobile &amp; RTL)</span>
+      <span class="sum">Subtotal €1,600</span>
     </div>
     <h3 style="padding:14px 18px 0;margin:0">Mobile application &amp; right-to-left</h3>
     <div class="phase-b">
       <table class="feat">
         <tr><td>Native mobile app <span class="d">iOS + Android, React Native / Expo</span></td><td class="r">€1,500</td></tr>
-        <tr><td>Right-to-left language support <span class="d">Arabic and similar: the whole interface mirrors. Deferred deliberately — with only English and French there is no way to verify it works</span></td><td class="r">€250</td></tr>
+        <tr><td>Right-to-left language support <span class="d">Arabic and similar: the whole interface mirrors</span></td><td class="r">€150</td></tr>
       </table>
     </div>
   </div>
@@ -1436,9 +1465,8 @@ stateDiagram-v2
   </div>
   <div class="totline">
     <span class="lab">Full scope · all phases <span class="sub">marketing campaigns still to be priced</span></span>
-    <span class="val">€8,000</span>
+    <span class="val">€7,850</span>
   </div>
-  <div class="note">Two Phase 2 lines are priced at €0 because the work is already complete — VIP and the analytics dashboards were built during Phase 2 development and are shown here so the scope is visible rather than invisible. Marketing campaigns (Phase 3) need a defined scope before they can be priced. Right-to-left support sits in Phase 4 by choice: it is real work across the whole interface, and with only English and French in use there is no way to verify it is correct until a right-to-left language is actually planned.</div>
 </section>
 
 <section id="hosting">
@@ -1451,25 +1479,25 @@ stateDiagram-v2
     <tbody>
       <tr class="band"><td colspan="2">Monthly / recurring — scales with usage</td></tr>
       <tr><td>Domain name (.com)</td><td class="r">≈ €1/mo (€10–15/yr)</td></tr>
-      <tr><td>App server / cloud hosting (Hetzner, Scaleway, OVH — EU)</td><td class="r">€5–40/mo</td></tr>
-      <tr><td>Managed PostgreSQL (or on the same server)</td><td class="r">€0–25/mo</td></tr>
-      <tr><td>Object storage — documents, avatars &amp; event banners (EU)</td><td class="r">€1–10/mo</td></tr>
-      <tr><td>Frontend hosting (Vercel / Cloudflare Pages)</td><td class="r">€0–20/mo</td></tr>
-      <tr><td>Transactional email (provider to confirm)</td><td class="r">€0–15/mo</td></tr>
-      <tr><td>SMS gateway — mobile verification (~€0.06 / SMS)</td><td class="r">€5–25/mo</td></tr>
+      <tr><td>Application containers — Scaleway, fr-par</td><td class="r">€5–40/mo</td></tr>
+      <tr><td>Managed PostgreSQL — Scaleway (DEV tier for test, production tier for live)</td><td class="r">€11–135/mo</td></tr>
+      <tr><td>Object storage (S3) — documents, avatars &amp; event banners, Scaleway</td><td class="r">€1–10/mo</td></tr>
+      <tr><td>CDN &amp; DNS in front of the application (Cloudflare, free tier)</td><td class="r">€0</td></tr>
+      <tr><td>Transactional email — Brevo</td><td class="r">€0–15/mo</td></tr>
+      <tr><td>SMS — Brevo (~€0.05 / SMS in Europe, ~€0.011 in the US)</td><td class="r">€5–25/mo</td></tr>
       <tr><td>reCAPTCHA / bot protection (free tier)</td><td class="r">€0</td></tr>
-      <tr><td>AI / LLM usage — search &amp; chatbot (Phase 3)</td><td class="r">€10–60/mo</td></tr>
+      <tr><td>AI / LLM usage — search &amp; chatbot (Phase 4)</td><td class="r">€10–60/mo</td></tr>
       <tr><td>Error monitoring (Sentry — free tier)</td><td class="r">€0</td></tr>
       <tr class="sub"><td>Typical monthly total</td><td class="r">≈ €20–220/mo (€250–2,600/yr)</td></tr>
       <tr class="band"><td colspan="2">One-time / annual &amp; per-transaction</td></tr>
       <tr><td>Payment processing (Stripe / PayPal)</td><td class="r">~1.5% + €0.25 / EU card txn</td></tr>
-      <tr><td>Apple Developer Program (iOS app — Phase 3)</td><td class="r">≈ €90/yr</td></tr>
-      <tr><td>Google Play Console (Android app — Phase 3)</td><td class="r">≈ €25 one-time</td></tr>
+      <tr><td>Apple Developer Program (iOS app — Phase 5)</td><td class="r">≈ €90/yr</td></tr>
+      <tr><td>Google Play Console (Android app — Phase 5)</td><td class="r">≈ €25 one-time</td></tr>
       <tr><td>SSL certificates (Let’s Encrypt)</td><td class="r">€0</td></tr>
     </tbody>
   </table>
   </div>
-  <div class="note">All figures are approximate — confirm against current provider pricing. Payment processing is charged per transaction, not as a fixed monthly fee. AI usage and app-store fees apply only once those features ship in Phase 3. US card processing rates differ from EU rates and should be confirmed alongside the market coverage.</div>
+  <div class="note">All figures are approximate — confirm against current provider pricing. Payment processing is charged per transaction, not as a fixed monthly fee. AI usage applies from Phase 4 and app-store fees from Phase 5. US card processing rates differ from EU rates and should be confirmed alongside the market coverage.</div>
 </section>
 
 <section id="assumptions">
@@ -1483,8 +1511,9 @@ stateDiagram-v2
   </ul>
   <h3>Exclusions</h3>
   <ul>
-    <li><strong>Phase 3</strong> — reviews, participation history, advanced matching, AI features, support chatbot, push notifications, PayPal, promoted events, the growth tooling (yearly billing, referrals, vouchers, discounts), hold &amp; release on the engagement fee, and marketing campaigns.</li>
-    <li><strong>Phase 4</strong> — the native mobile application and right-to-left language support.</li>
+    <li><strong>Phase 3</strong> — hold &amp; release on the engagement fee.</li>
+    <li><strong>Phase 4</strong> — reviews, participation history, advanced matching, AI features, support chatbot, push notifications, PayPal, promoted events, the growth tooling (yearly billing, referrals, vouchers, discounts) and marketing campaigns.</li>
+    <li><strong>Phase 5</strong> — the native mobile application and right-to-left language support.</li>
   </ul>
   <h3>Open questions carried from the meeting of 29/07/2026</h3>
   <ul>
