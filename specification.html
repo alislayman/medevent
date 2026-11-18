@@ -138,6 +138,8 @@ code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 
 .paytag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid transparent}
 .paytag.yes{background:#E4F2EB;color:#2E7D5B;border-color:#BCDCCC}
 .paytag.no{background:#F0F2F2;color:#6B7E86;border-color:var(--line-2)}
+.paytag.part{background:#FDF3E1;color:#9A6212;border-color:#EBD3A6}
+.payamt{display:block;margin-top:4px;font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap}
 .phase-top .paytag{margin-left:4px}
 .phase-b{padding:6px 18px 10px}
 .feat{width:100%;border-collapse:collapse;font-size:14px}
@@ -1346,41 +1348,41 @@ stateDiagram-v2
   <table class="tbl">
     <thead><tr><th>Phase</th><th>Scope</th><th class="r">Cost</th><th class="r">Payment</th></tr></thead>
     <tbody>
-      <tr><td><strong>Phase 1</strong></td><td>Foundation &amp; core marketplace</td><td class="r">€1,545</td><td class="r"><span class="paytag no">Not paid</span></td></tr>
-      <tr><td><strong>Phase 2</strong></td><td>Trust, teams, payable services, back-office &amp; localization</td><td class="r">€1,735</td><td class="r"><span class="paytag no">Not paid</span></td></tr>
-      <tr class="sub"><td>Core build</td><td>Phase 1 + Phase 2</td><td class="r">€3,280</td><td class="r"><span class="paytag no">Not paid</span></td></tr>
+      <tr><td><strong>Phase 1</strong></td><td>Foundation &amp; core marketplace</td><td class="r">€1,545</td><td class="r"><span class="paytag yes">Paid</span></td></tr>
+      <tr><td><strong>Phase 2</strong></td><td>Trust, teams, payable services, back-office &amp; localization</td><td class="r">€1,735</td><td class="r"><span class="paytag part">Partially paid</span><span class="payamt">€1,455 paid · €280 due</span></td></tr>
+      <tr class="sub"><td>Core build</td><td>Phase 1 + Phase 2</td><td class="r">€3,280</td><td class="r"><span class="paytag part">Partially paid</span><span class="payamt">€3,000 paid · €280 due</span></td></tr>
       <tr><td><strong>Phase 3</strong></td><td>Hold &amp; release on the engagement fee · audit tooling</td><td class="r">€1,150</td><td class="r"><span class="paytag no">Not paid</span></td></tr>
       <tr><td><strong>Phase 4</strong></td><td>Reviews, AI, promotion, payments &amp; marketing</td><td class="r">€2,020 <span style="white-space:nowrap">+ 1 item to price</span></td><td class="r"><span class="paytag no">Not paid</span></td></tr>
       <tr><td><strong>Phase 5</strong></td><td>Mobile application &amp; right-to-left</td><td class="r">€1,600</td><td class="r"><span class="paytag no">Not paid</span></td></tr>
-      <tr class="total"><td>Total</td><td>All phases</td><td class="r">€8,050 <span style="white-space:nowrap">+ 1 item to price</span></td><td class="r"><span class="paytag no">Not paid</span></td></tr>
+      <tr class="total"><td>Total</td><td>All phases</td><td class="r">€8,050 <span style="white-space:nowrap">+ 1 item to price</span></td><td class="r"><span class="paytag part">Partially paid</span><span class="payamt">€3,000 paid · €5,050 due</span></td></tr>
     </tbody>
   </table>
   </div>
-  <p class="cap">Payment status is shown per feature and per phase, and is updated as invoices are settled. One item — marketing campaigns, in Phase 4 — is not yet priced: its scope needs to be agreed first. It is excluded from every total shown here, so the €7,850 will rise once it is quoted.</p>
+  <p class="cap">Payment status is shown per feature and per phase, and is updated as invoices are settled. €3,000 has been received so far, applied in phase order: Phase 1 in full (€1,545), then Phase 2 feature by feature (€1,455). Localization &amp; translations is partially paid, €370 of €500, so €280 of Phase 2 is still due: €130 on localization and €150 on admin panel permissions &amp; roles. One item — marketing campaigns, in Phase 4 — is not yet priced: its scope needs to be agreed first. It is excluded from every total shown here, so the €8,050 will rise once it is quoted.</p>
 
   <div class="phase">
     <div class="phase-top">
       <span class="num">Phase <span>1</span></span>
       <span class="prio prio-1">Priority · Must-have (MVP)</span>
       <span class="sum">Subtotal €1,545</span>
-      <span class="paytag no">Not paid</span>
+      <span class="paytag yes">Paid</span>
     </div>
     <h3 style="padding:14px 18px 0;margin:0">Foundation &amp; core marketplace</h3>
     <div class="phase-b">
       <table class="feat">
-        <tr><td>Public Home page <span class="d">Intro video, logo, clean minimal UI, calls to action</span></td><td class="r">€85</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>About Us + Licensing static pages <span class="d">Including the certified-countries notice (EU + US only)</span></td><td class="r">€60</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation · reCAPTCHA on sign in, sign up, reset and change password · preferred language captured at signup</span></td><td class="r">€130</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Email verification</td><td class="r">€45</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Professional profile <span class="d">Two-layer role taxonomy · common core plus per-type fields · conditions to sign · profile picture · bio · experience &amp; skills · preferred sports · licences per country · document uploads · agenda</span></td><td class="r">€225</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Organisation profile <span class="d">Fields, logo, conditions to sign, business-domain verification and requested-validation flow</span></td><td class="r">€115</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Profile completion stepper &amp; access gating <span class="d">Green completed steps, completeness percentage, empty-result gating on search and on other profiles</span></td><td class="r">€70</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Event creation + auto-generated contract (base) <span class="d">Headcount per role · lead-required flag on the médecin role · coverage · materials · sport · banner + circular profile image</span></td><td class="r">€150</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Search — Organiser → Professionals <span class="d">Filters, licence-country flags, languages, detail hint icon</span></td><td class="r">€105</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Search — Professional → Events <span class="d">Filters · upcoming only · headcount per role · ordering with status · “not available” state · map view</span></td><td class="r">€100</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Subscription tiers (Basic / Bronze / Silver / Gold) + Stripe</td><td class="r">€165</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Internationalization (FR / EN) foundation <span class="d">Site opens in the user's preferred language, changeable from the profile</span></td><td class="r">€80</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Responsive mobile web layout</td><td class="r">€215</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
+        <tr><td>Public Home page <span class="d">Intro video, logo, clean minimal UI, calls to action</span></td><td class="r">€85</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>About Us + Licensing static pages <span class="d">Including the certified-countries notice (EU + US only)</span></td><td class="r">€60</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Sign up / Sign in <span class="d">Professional &amp; Organisation · reCAPTCHA on sign in, sign up, reset and change password · preferred language captured at signup</span></td><td class="r">€130</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Email verification</td><td class="r">€45</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Professional profile <span class="d">Two-layer role taxonomy · common core plus per-type fields · conditions to sign · profile picture · bio · experience &amp; skills · preferred sports · licences per country · document uploads · agenda</span></td><td class="r">€225</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Organisation profile <span class="d">Fields, logo, conditions to sign, business-domain verification and requested-validation flow</span></td><td class="r">€115</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Profile completion stepper &amp; access gating <span class="d">Green completed steps, completeness percentage, empty-result gating on search and on other profiles</span></td><td class="r">€70</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Event creation + auto-generated contract (base) <span class="d">Headcount per role · lead-required flag on the médecin role · coverage · materials · sport · banner + circular profile image</span></td><td class="r">€150</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Search — Organiser → Professionals <span class="d">Filters, licence-country flags, languages, detail hint icon</span></td><td class="r">€105</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Search — Professional → Events <span class="d">Filters · upcoming only · headcount per role · ordering with status · “not available” state · map view</span></td><td class="r">€100</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Subscription tiers (Basic / Bronze / Silver / Gold) + Stripe</td><td class="r">€165</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Internationalization (FR / EN) foundation <span class="d">Site opens in the user's preferred language, changeable from the profile</span></td><td class="r">€80</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Responsive mobile web layout</td><td class="r">€215</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
       </table>
     </div>
   </div>
@@ -1390,21 +1392,21 @@ stateDiagram-v2
       <span class="num">Phase <span>2</span></span>
       <span class="prio prio-2">Priority · Important (trust, back-office &amp; control)</span>
       <span class="sum">Subtotal €1,735</span>
-      <span class="paytag no">Not paid</span>
+      <span class="paytag part">Partially paid · €280 due</span>
     </div>
     <h3 style="padding:14px 18px 0;margin:0">Trust, teams, payable services, back-office &amp; localization</h3>
     <div class="phase-b">
       <table class="feat">
-        <tr><td>Verification badge workflow + one-time payment <span class="d">Enriched verification page · global enable/disable leaving existing holders untouched</span></td><td class="r">€150</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Mobile (SMS) verification</td><td class="r">€70</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Contract editing / replacement + public vs. direct-to-support</td><td class="r">€85</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Salary negotiation <span class="d">Gold counter-proposal; organiser refuses, accepts, or counters in between · full proposal history</span></td><td class="r">€70</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Payable services &amp; quotations (devis) <span class="d">Catalogue with amounts including €0 · private search · team composition · accompaniment · organisation validation · formation request</span></td><td class="r">€95</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Notifications <span class="d">In-app + email</span></td><td class="r">€120</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · contact details blocked and hidden · contact support with a motif</span></td><td class="r">€150</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Teams <span class="d">Create / join · permissions on invitation · mandatory médecin lead · leadership transfer · apply as a team · multi-team membership</span></td><td class="r">€180</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Admin / back-office panel <span class="d">Users, verification, Entities menu, Messages with filters, quotations, manual plan grants</span></td><td class="r">€165</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
-        <tr><td>Localization &amp; translations <span class="d"><strong>New.</strong> All texts editable from the admin panel in every language, English included · client adds languages himself · changes live immediately with no deployment · right-to-left support excluded, see Phase 5</span></td><td class="r">€500</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
+        <tr><td>Verification badge workflow + one-time payment <span class="d">Enriched verification page · global enable/disable leaving existing holders untouched</span></td><td class="r">€150</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Mobile (SMS) verification</td><td class="r">€70</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Contract editing / replacement + public vs. direct-to-support</td><td class="r">€85</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Salary negotiation <span class="d">Gold counter-proposal; organiser refuses, accepts, or counters in between · full proposal history</span></td><td class="r">€70</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Payable services &amp; quotations (devis) <span class="d">Catalogue with amounts including €0 · private search · team composition · accompaniment · organisation validation · formation request</span></td><td class="r">€95</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Notifications <span class="d">In-app + email</span></td><td class="r">€120</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Messaging <span class="d">Professional ↔ organiser ↔ peer ↔ support · contact details blocked and hidden · contact support with a motif</span></td><td class="r">€150</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Teams <span class="d">Create / join · permissions on invitation · mandatory médecin lead · leadership transfer · apply as a team · multi-team membership</span></td><td class="r">€180</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Admin / back-office panel <span class="d">Users, verification, Entities menu, Messages with filters, quotations, manual plan grants</span></td><td class="r">€165</td><td class="pay"><span class="paytag yes">Paid</span></td></tr>
+        <tr><td>Localization &amp; translations <span class="d"><strong>New.</strong> All texts editable from the admin panel in every language, English included · client adds languages himself · changes live immediately with no deployment · right-to-left support excluded, see Phase 5</span></td><td class="r">€500</td><td class="pay"><span class="paytag part">Partially paid</span><span class="payamt">€370 paid · €130 due</span></td></tr>
         <tr><td>VIP organisations &amp; VIP events <span class="d"><strong>Already delivered.</strong> Set by admin, by payment or on request · events shown first · applying restricted to Gold · gold-on-black treatment</span></td><td class="r">€0</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
         <tr><td>Admin analytics &amp; billing dashboards <span class="d"><strong>Already delivered.</strong> Users per type and total, revenue per plan and total, monthly buckets, manual grants excluded</span></td><td class="r">€0</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
         <tr><td>Admin panel permissions &amp; roles <span class="d"><strong>New.</strong> Scoped admin and support sub-roles, with the roles themselves and their permissions managed by you from the admin panel. Today a single role covers both, so support staff hold full admin rights</span></td><td class="r">€150</td><td class="pay"><span class="paytag no">Not paid</span></td></tr>
@@ -1677,7 +1679,7 @@ stateDiagram-v2
   <p class="cap">68 items in total — 58 agreed on 29 July 2026, 10 added on 30 July 2026. Phase 1 · must-have MVP · Phase 2 · trust, teams and back-office · Phase 3 · mobile, AI and growth.</p>
 </section>
 
-<footer>Scope agreement · Updated 11 August 2026 · incorporating the client meeting of 29 July 2026, the notes of 30 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
+<footer>Scope agreement · Updated 18 November 2026 · incorporating the client meeting of 29 July 2026, the notes of 30 July 2026. Supersedes the draft of 11 July 2026. Diagrams rendered with Mermaid.</footer>
 </div>
 </main>
 </div>
